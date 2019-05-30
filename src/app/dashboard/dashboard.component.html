@@ -1,0 +1,62 @@
+<div class="container-fluid" style="max-width: 400px; text-align: center">
+
+  <div style="text-align: center">
+    <div (click)="addNewTime()" class="circle-button {{isClockIn() ? 'clock-out' : 'clock-in'}}">
+      <p>{{isClockIn() ? 'Ausstempeln' : 'Einstempeln'}}</p>
+    </div>
+
+    <div *ngIf=!isClockIn()>
+      <label>Grund</label>
+      <app-select [options]="appservice.bookingKeys" [(selected)]="appservice.selectedBookingKey"></app-select>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Current status -->
+  <div class="" style="text-align: center; padding: 10px;">
+    <h4>Aktuell</h4>
+
+    <div style="padding: 15px;" *ngIf="appservice.latestBookingTime==null">Keine Stempelung</div>
+
+    <div *ngIf="appservice.latestBookingTime" class="latest-status {{isClockIn() ? 'clock-in-txt' : 'clock-out-txt'}}">
+      {{isClockIn() ? 'Eingestempelt' : 'Ausgestempelt'}}
+    </div>
+
+    <div *ngIf="appservice.latestBookingTime" class="latest-detail row">
+      <div class="col col-sm-6" style="border-right: 1px solid #e8e8e8;">
+        <label>Uhrzeit</label>
+        <span>{{appservice.latestBookingTime?.time}}</span>
+      </div>
+      <div class="col col-sm-6">
+        <label>Grund</label>
+        <span>{{getReason(this.appservice.latestBookingTime?.bsId)}}</span>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+  <!-- Current status -->
+  <div style="text-align: center">
+    <h4>Verlauf</h4>
+
+    <table class="table table-bordered table-sm">
+      <thead>
+        <th>Status</th>
+        <th>Uhrzeit</th>
+        <th>Grund</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bookingTime of appservice.bookingTimes">
+
+          <td>{{bookingTime.isClockIn ? 'Eingestempelt' : 'Ausgestempelt'}}</td>
+          <td>{{bookingTime.time}}</td>
+          <td>{{getReason(bookingTime.bsId)}}</td>
+
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>

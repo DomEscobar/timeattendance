@@ -1,0 +1,7 @@
+<div *ngIf="showOptions" class="option-box">
+  <div class="option-item" *ngFor="let option of options" (click)="select(option)">{{option[property]}}</div>
+</div>
+
+<div class="selectBox" (click)="showOptions=true;">
+  <p *ngIf="selected">{{selected[property]}}</p>
+</div>
