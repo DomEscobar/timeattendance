@@ -48,18 +48,41 @@ export class AppService {
     }
 
     this.bookingTimes = JSON.parse(window.atob(encryptTimes));
-    this.bookingTimes.reverse();
   }
 
   public addBookingTime(bookingTime: BookingTime): void {
     this.bookingTimes.unshift(bookingTime);
-    localStorage.setItem(this.TIMES, window.btoa(JSON.stringify(this.bookingTimes)));
-    localStorage.setItem(this.LATEST, JSON.stringify(bookingTime));
     this.latestBookingTime = bookingTime;
+    this.updateLocaleStoreage();
+  }
+
+  public updateBookingTime(bookingTime: BookingTime): void {
+    const bkTimeIndex = this.bookingTimes.findIndex(o => o.guid === bookingTime.guid);
+
+    if (bkTimeIndex === -1) {
+      return;
+    }
+
+    this.bookingTimes[bkTimeIndex] = bookingTime;
+    this.latestBookingTime = bookingTime;
+    this.updateLocaleStoreage();
   }
 
   public updateUser(user: User): void {
     this.user = user;
     localStorage.setItem(this.USER, window.btoa(JSON.stringify(user)));
+  }
+
+  public getReason(bsId: number): string {
+    if (bsId == null) {
+      return ' - ';
+    }
+
+    return this.bookingKeys.find(o => o.id === bsId).name;
+  }
+
+  private updateLocaleStoreage(): void {
+    localStorage.setItem(this.TIMES, window.btoa(JSON.stringify(this.bookingTimes)));
+    localStorage.setItem(this.LATEST, JSON.stringify(this.latestBookingTime));
   }
 }

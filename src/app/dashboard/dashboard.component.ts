@@ -22,23 +22,32 @@ export class DashboardComponent implements OnInit {
   }
 
   public addNewTime() {
+
+    if (this.isClockIn()) {
+      const latest = Object.assign({}, this.appservice.latestBookingTime);
+      latest.clockOut = this.dateFormatPipe.transform(new Date(), 'HH:mm');
+      latest.actualTime = moment.utc(moment(latest.clockOut, 'HH:mm').diff(moment(latest.clockIn, 'HH:mm'))).format('HH:mm');
+      this.appservice.updateBookingTime(latest);
+      return;
+    }
+
     const bookingTime = new BookingTime();
-    bookingTime.isClockIn = !this.isClockIn();
-    bookingTime.bsId = bookingTime.isClockIn ? this.appservice.selectedBookingKey.id : null;
-    bookingTime.time = this.dateFormatPipe.transform(new Date(), 'hh:mm');
+    bookingTime.bsId = this.appservice.selectedBookingKey.id;
+    bookingTime.clockIn = this.dateFormatPipe.transform(new Date(), 'HH:mm');
 
     this.appservice.addBookingTime(bookingTime);
   }
 
-  public getReason(bsId: number): string {
-    if (bsId == null) {
-      return ' Gehen ';
-    }
-
-    return this.appservice.bookingKeys.find(o => o.id === bsId).name;
-  }
 
   public isClockIn(): boolean {
-    return this.appservice.latestBookingTime ? this.appservice.latestBookingTime.isClockIn : false;
+    return this.appservice.latestBookingTime ? this.appservice.latestBookingTime.clockOut == null : false;
+  }
+
+  public getDateFormated(): string {
+    if (this.appservice.latestBookingTime == null) {
+      return;
+    }
+
+    return this.appservice.latestBookingTime.date;
   }
 }

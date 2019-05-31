@@ -1,13 +1,17 @@
+
+import * as moment from 'moment';
+
 export class BookingTime {
     constructor(
         public guid: string = '',
-        public date: Date = new Date(),
-        public time?: string,
+        public date?: string,
+        public clockIn?: string,
+        public clockOut?: string,
         public bsId?: number,
-        public isClockIn: boolean = false,
-
+        public actualTime?: string,
     ) {
         this.guid = this.createGuid();
+        this.date = moment(new Date()).format('DD.MM.YYYY');
     }
 
     private createGuid(): string {

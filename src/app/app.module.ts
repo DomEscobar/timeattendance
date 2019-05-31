@@ -7,19 +7,26 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MomentModule } from 'ngx-moment';
 import { HttpClientModule } from '@angular/common/http';
 import { SelectComponent } from './components/select/select.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
+import { BookingTimesComponent } from './booking-times/booking-times.component';
+import { DatepickerComponent } from './components/datepicker/datepicker.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    SelectComponent
+    SelectComponent,
+    BookingTimesComponent,
+    DatepickerComponent
   ],
   imports: [
     BrowserModule,
     MomentModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]

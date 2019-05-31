@@ -1,0 +1,17 @@
+:host {
+  display: block;
+  overflow: hidden;
+}
+
+label {
+  font-size: 12px;
+  color: #8e8e8e;
+  margin-bottom: 0px;
+  display: block;
+}
+
+input {
+  border-radius: 20px;
+  font-size: 14px;
+  text-align: center;
+}

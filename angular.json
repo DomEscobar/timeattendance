@@ -24,13 +24,17 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest"
             ],
             "styles": [
+              "./node_modules/air-datepicker/dist/css/datepicker.min.css",
               "src/styles.less"
             ],
             "scripts": [
-
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./node_modules/air-datepicker/dist/js/datepicker.min.js",
+              "./node_modules/air-datepicker/dist/js/i18n/datepicker.de.js"
             ]
           },
           "configurations": {
@@ -56,7 +60,8 @@
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
                 }
-              ]
+              ],
+              "serviceWorker": true
             }
           }
         },
@@ -90,7 +95,8 @@
             "scripts": [],
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.webmanifest"
             ]
           }
         },

@@ -1,0 +1,47 @@
+<div class="container-fluid">
+
+  <div class="container-fluid date-select">
+    <div class="" style="text-align:center;">
+      <div class="inline">
+        <acc-datepicker [title]="'Von'" [(value)]="from">
+        </acc-datepicker>
+      </div>
+      <div class="inline">
+        <acc-datepicker [title]="'Bis'" [(value)]="to">
+        </acc-datepicker>
+      </div>
+      <div class="inline">
+        <button class="btn btn-primary" style="margin-top: -61px;" (click)="load()">Laden</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="export-select">PDF</div>
+  <div class="export-select">EXCEL</div>
+  <!-- Current status -->
+  <div style="text-align: center">
+
+    <table class="table table-bordered table-sm">
+      <thead>
+        <th>Datum</th>
+        <th>Kommen</th>
+        <th>Gehen</th>
+        <th>Istzeit</th>
+        <th>Grund</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bookingTime of bookingTimes">
+
+          <td>{{bookingTime.date}}</td>
+          <td>{{bookingTime.clockIn}}</td>
+          <td>{{bookingTime.clockOut}}</td>
+          <td>{{bookingTime.actualTime}}</td>
+          <td>{{appService.getReason(bookingTime.bsId)}}</td>
+
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>

@@ -1,0 +1,6 @@
+<div class="form-group" style="position:relative">
+  <label>{{ title  }}</label>
+  <input #datepicker type="text" class="form-control datepicker-here"
+    [style.maxWidth]="_isRange || hasTime ? '135px' : '101px'" style="display:inline-block;" [(ngModel)]="dateDataStr"
+    (change)="onInputChange()" data-language="de" />
+</div>

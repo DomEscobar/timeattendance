@@ -16,7 +16,6 @@
   <!-- Current status -->
   <div class="" style="text-align: center; padding: 10px;">
     <h4>Aktuell</h4>
-
     <div style="padding: 15px;" *ngIf="appservice.latestBookingTime==null">Keine Stempelung</div>
 
     <div *ngIf="appservice.latestBookingTime" class="latest-status {{isClockIn() ? 'clock-in-txt' : 'clock-out-txt'}}">
@@ -26,11 +25,11 @@
     <div *ngIf="appservice.latestBookingTime" class="latest-detail row">
       <div class="col col-sm-6" style="border-right: 1px solid #e8e8e8;">
         <label>Uhrzeit</label>
-        <span>{{appservice.latestBookingTime?.time}}</span>
+        <span>{{isClockIn() ? appservice.latestBookingTime.clockIn : appservice.latestBookingTime.clockOut}}</span>
       </div>
       <div class="col col-sm-6">
         <label>Grund</label>
-        <span>{{getReason(this.appservice.latestBookingTime?.bsId)}}</span>
+        <span>{{appservice.getReason(this.appservice.latestBookingTime?.bsId)}}</span>
       </div>
     </div>
   </div>
@@ -38,20 +37,23 @@
   <hr>
   <!-- Current status -->
   <div style="text-align: center">
-    <h4>Verlauf</h4>
+    <h4 style="">Verlauf</h4>
+    <label>{{getDateFormated()}}</label>
 
     <table class="table table-bordered table-sm">
       <thead>
-        <th>Status</th>
-        <th>Uhrzeit</th>
+        <th>Eingestempelt</th>
+        <th>Ausgestempelt</th>
+        <th>Istzeit</th>
         <th>Grund</th>
       </thead>
       <tbody>
         <tr *ngFor="let bookingTime of appservice.bookingTimes">
 
-          <td>{{bookingTime.isClockIn ? 'Eingestempelt' : 'Ausgestempelt'}}</td>
-          <td>{{bookingTime.time}}</td>
-          <td>{{getReason(bookingTime.bsId)}}</td>
+          <td>{{bookingTime.clockIn}}</td>
+          <td>{{bookingTime.clockOut}}</td>
+          <td>{{bookingTime.actualTime}}</td>
+          <td>{{appservice.getReason(bookingTime.bsId)}}</td>
 
         </tr>
       </tbody>
