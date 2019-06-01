@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" style="    max-width: 900px;">
 
   <div class="container-fluid date-select">
     <div class="" style="text-align:center;">
@@ -16,12 +16,20 @@
     </div>
   </div>
 
-  <div class="export-select">PDF</div>
-  <div class="export-select">EXCEL</div>
+  <div *ngIf="appService.hasCreditals()">
+    <div class="export-select" (click)="downloadPDF()">PDF</div>
+    <div class="export-select" (click)="downloadExcel()">EXCEL</div>
+  </div>
+
+  <div style="padding: 10px;margin: 5px;font-size: 13px;" *ngIf="!appService.hasCreditals()">
+    <a [routerLink]="['/profile']">
+      Benutzerdaten eingeben um zu exportieren
+    </a>
+  </div>
   <!-- Current status -->
   <div style="text-align: center">
 
-    <table class="table table-bordered table-sm">
+    <table id="tblBu" class="table table-bordered table-sm">
       <thead>
         <th>Datum</th>
         <th>Kommen</th>

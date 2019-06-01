@@ -33,6 +33,9 @@
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
+              "./src/assets/toastr.min.js",
+              "./src/assets/FileSaver.min.js",
+              "./src/assets/tableexport.min.js",
               "./node_modules/air-datepicker/dist/js/datepicker.min.js",
               "./node_modules/air-datepicker/dist/js/i18n/datepicker.de.js"
             ]

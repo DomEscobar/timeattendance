@@ -1,8 +1,8 @@
 export class User {
 
-    public guid: string = '';
-    public firstname?: string;
-    public lastname?: string;
+    public guid = '';
+    public firstname = '';
+    public lastname = '';
     public signature?: string;
 
     constructor(data?) {

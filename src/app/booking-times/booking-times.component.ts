@@ -1,7 +1,8 @@
-import { Component, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { AppService } from '../services/app.service';
 import * as moment from 'moment';
 import { BookingTime } from '../models/bookingTime';
+declare const $: any;
 
 @Component({
   selector: 'app-booking-times',
@@ -15,17 +16,15 @@ export class BookingTimesComponent implements AfterViewInit {
   public bookingTimes: BookingTime[];
 
   constructor(
-    private changeDetectorRef: ChangeDetectorRef,
     public appService: AppService) { }
 
   ngAfterViewInit() {
     setTimeout(() => {
       this.from = new Date();
       this.to = new Date();
+      this.bookingTimes = JSON.parse(JSON.stringify(this.appService.bookingTimes));
       this.load();
     }, 400);
-
-    this.bookingTimes = JSON.parse(JSON.stringify(this.appService.bookingTimes));
   }
 
   public load(): void {
@@ -47,5 +46,16 @@ export class BookingTimesComponent implements AfterViewInit {
 
     });
     this.bookingTimes = JSON.parse(JSON.stringify(this.bookingTimes));
+  }
+
+  public downloadExcel() {
+    const ele = document.getElementById('tblBu');
+    this.appService.downloadExcel(ele);
+  }
+
+  public downloadPDF() {
+    const ele = document.getElementById('tblBu').outerHTML;
+    // tslint:disable-next-line: max-line-length
+    this.appService.downloadPDF(moment(this.from).format('DD.MM.YYYY') + ' - ' + moment(this.to).format('DD.MM.YYYY') + ' - ' + this.appService.user.firstname, ele);
   }
 }

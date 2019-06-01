@@ -11,6 +11,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { BookingTimesComponent } from './booking-times/booking-times.component';
 import { DatepickerComponent } from './components/datepicker/datepicker.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SignaturePadDirective } from './components/signature-pad.directive';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { DatepickerComponent } from './components/datepicker/datepicker.componen
     DashboardComponent,
     SelectComponent,
     BookingTimesComponent,
-    DatepickerComponent
+    DatepickerComponent,
+    ProfileComponent,
+    SignaturePadDirective
   ],
   imports: [
     BrowserModule,

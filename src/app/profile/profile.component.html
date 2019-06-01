@@ -1,0 +1,29 @@
+<div class="container-fluid" style="    max-width: 900px; margin-top: 20%;">
+
+  <div class="row" *ngIf="appservice.user">
+    <div class="col-sm-6 col-md-4">
+      <label>Vorname</label>
+      <input class="form-control" [(ngModel)]="appservice.user.firstname" />
+    </div>
+    <div class="col-sm-6 col-md-4">
+      <label>Nachname</label>
+      <input class="form-control" [(ngModel)]="appservice.user.lastname" />
+    </div>
+    <div class="col-sm-12 col-md-4" style="text-align: center">
+      <label>Unterschrift</label><br>
+      <canvas appSignaturePad style="border: 1px solid #dadada;" class="signature-pad" [onClear]="onSignatureClear"
+        width="300" height="100">
+      </canvas>
+      <div class="mini-button " (click)="newSignature()">neu</div>
+    </div>
+  </div>
+
+
+  <div class="" style="margin-top: 20px">
+    <div class="">
+      <button class="btn btn-success" (click)="save()">Speichern</button>
+    </div>
+  </div>
+
+
+</div>
