@@ -38,3 +38,33 @@ thead {
 .toast-message {
   font-size: 12px;
 }
+
+@keyframes shadow-pulse {
+  0% {
+    box-shadow: 0 0 0 0px rgb(114, 229, 56, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 0 5px rgb(255, 255, 255, 0);
+  }
+}
+
+.pulse-effect {
+  animation: shadow-pulse 2s infinite;
+  border-radius: 40px;
+  padding: 5px;
+}
+
+.animate-all {
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+
+.form-control {
+  border-radius: 20px;
+}
+
+.btn {
+  border-radius: 20px;
+}

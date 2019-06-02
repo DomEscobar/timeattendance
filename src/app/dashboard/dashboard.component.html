@@ -1,7 +1,7 @@
 <div class="container-fluid" style="max-width: 400px; text-align: center">
 
   <div style="text-align: center">
-    <div (click)="addNewTime()" class="circle-button {{isClockIn() ? 'clock-out' : 'clock-in'}}">
+    <div (click)="addNewTime()" class="animate-all circle-button {{isClockIn() ? 'clock-out' : 'clock-in'}}">
       <p>{{isClockIn() ? 'Ausstempeln' : 'Einstempeln'}}</p>
     </div>
 
@@ -19,7 +19,7 @@
     <div style="padding: 15px;" *ngIf="appservice.latestBookingTime==null">Keine Stempelung</div>
 
     <div *ngIf="appservice.latestBookingTime" class="latest-status {{isClockIn() ? 'clock-in-txt' : 'clock-out-txt'}}">
-      {{isClockIn() ? 'Eingestempelt' : 'Ausgestempelt'}}
+      <span [class]="isClockIn() ? 'pulse-effect' : ''"> {{isClockIn() ? 'Eingestempelt' : 'Ausgestempelt'}} </span>
     </div>
 
     <div *ngIf="appservice.latestBookingTime" class="latest-detail row">
