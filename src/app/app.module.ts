@@ -16,6 +16,7 @@ import { SignaturePadDirective } from './components/signature-pad.directive';
 import { BookingTimeDetailComponent } from './booking-times/booking-time-detail/booking-time-detail.component';
 import { ModalDirective } from './components/modal.directive';
 import { TimeInputComponent } from './components/time-input/time-input.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { TimeInputComponent } from './components/time-input/time-input.component
     SignaturePadDirective,
     BookingTimeDetailComponent,
     ModalDirective,
-    TimeInputComponent
+    TimeInputComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
