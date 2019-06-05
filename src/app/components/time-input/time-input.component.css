@@ -1,0 +1,9 @@
+:host {
+  display: inline-block;
+  width: 62px;
+}
+
+input {
+  width: 62px;
+  text-align: center;
+}

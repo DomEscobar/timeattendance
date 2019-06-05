@@ -1,0 +1,7 @@
+<div style="position:relative" style="width: 65px;">
+  <input class="form-control" #timeInput type="text"
+         [(ngModel)]="inputValue"
+         (blur)="inputChange()"
+         (change)="inputChange()"
+         (keyup.enter)="inputChange()" class="inputTimer" />
+</div>

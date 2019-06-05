@@ -14,17 +14,26 @@ export class BookingTimesComponent implements AfterViewInit {
   public from: Date;
   public to: Date;
   public bookingTimes: BookingTime[];
+  public selectedBooking: BookingTime;
 
   constructor(
     public appService: AppService) { }
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.from = new Date();
-      this.to = new Date();
+      this.from = moment(new Date()).startOf('month').toDate();
+      this.to = moment(new Date()).endOf('month').toDate();
       this.bookingTimes = JSON.parse(JSON.stringify(this.appService.bookingTimes));
       this.load();
     }, 400);
+  }
+
+  public addBooking(): void {
+    const bookingTime = new BookingTime();
+    bookingTime.date = moment(this.from).format('DD.MM.YYYY');
+
+    this.appService.addBookingTime(bookingTime);
+    this.load();
   }
 
   public load(): void {
@@ -57,5 +66,19 @@ export class BookingTimesComponent implements AfterViewInit {
     const ele = document.getElementById('tblBu').outerHTML;
     // tslint:disable-next-line: max-line-length
     this.appService.downloadPDF(moment(this.from).format('DD.MM.YYYY') + ' - ' + moment(this.to).format('DD.MM.YYYY') + ' - ' + this.appService.user.firstname, ele);
+  }
+
+  public updateBookingTime(bookingTime: BookingTime) {
+
+    this.appService.updateBookingTime(bookingTime, false);
+    this.selectedBooking = null;
+    this.load();
+  }
+
+  public deleteBookingTime(bookingTime: BookingTime): void {
+
+    this.appService.deleteBookingTime(bookingTime);
+    this.selectedBooking = null;
+    this.load();
   }
 }

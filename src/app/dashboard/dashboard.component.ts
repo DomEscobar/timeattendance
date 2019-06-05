@@ -26,7 +26,6 @@ export class DashboardComponent implements OnInit {
     if (this.isClockIn()) {
       const latest = Object.assign({}, this.appservice.latestBookingTime);
       latest.clockOut = this.dateFormatPipe.transform(new Date(), 'HH:mm');
-      latest.actualTime = moment.utc(moment(latest.clockOut, 'HH:mm').diff(moment(latest.clockIn, 'HH:mm'))).format('HH:mm');
       this.appservice.updateBookingTime(latest);
       return;
     }

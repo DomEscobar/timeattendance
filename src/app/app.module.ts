@@ -13,6 +13,9 @@ import { BookingTimesComponent } from './booking-times/booking-times.component';
 import { DatepickerComponent } from './components/datepicker/datepicker.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SignaturePadDirective } from './components/signature-pad.directive';
+import { BookingTimeDetailComponent } from './booking-times/booking-time-detail/booking-time-detail.component';
+import { ModalDirective } from './components/modal.directive';
+import { TimeInputComponent } from './components/time-input/time-input.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { SignaturePadDirective } from './components/signature-pad.directive';
     BookingTimesComponent,
     DatepickerComponent,
     ProfileComponent,
-    SignaturePadDirective
+    SignaturePadDirective,
+    BookingTimeDetailComponent,
+    ModalDirective,
+    TimeInputComponent
   ],
   imports: [
     BrowserModule,

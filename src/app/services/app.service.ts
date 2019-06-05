@@ -4,6 +4,9 @@ import { BookingTime } from '../models/bookingTime';
 import { BookingKey } from '../models/bookingKey';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import * as moment from 'moment';
+import { toBase64String } from '@angular/compiler/src/output/source_map';
+declare const toastr: any;
 
 @Injectable({
   providedIn: 'root'
@@ -59,21 +62,39 @@ export class AppService {
     localStorage.setItem(this.LATEST, JSON.stringify(this.latestBookingTime));
   }
 
+  public deleteBookingTime(bookingTime: BookingTime): void {
+
+    if (this.latestBookingTime.guid === bookingTime.guid) {
+      toastr.error('Eine aktuelle Stempelung kann nicht gelöscht werden', 'Fehler');
+      return;
+    }
+
+    this.bookingTimes = this.bookingTimes.filter(o => o.guid !== bookingTime.guid);
+    this.updateLocaleStoreage();
+  }
+
   public addBookingTime(bookingTime: BookingTime): void {
     this.bookingTimes.unshift(bookingTime);
     this.latestBookingTime = bookingTime;
     this.updateLocaleStoreage();
   }
 
-  public updateBookingTime(bookingTime: BookingTime): void {
+  public updateBookingTime(bookingTime: BookingTime, updateLatest = true): void {
     const bkTimeIndex = this.bookingTimes.findIndex(o => o.guid === bookingTime.guid);
 
     if (bkTimeIndex === -1) {
       return;
     }
 
+    if (bookingTime.clockOut != null || bookingTime.clockOut != '') {
+      bookingTime.actualTime = moment.utc(moment(bookingTime.clockOut, 'HH:mm').diff(moment(bookingTime.clockIn, 'HH:mm'))).format('HH:mm');
+    }
+
     this.bookingTimes[bkTimeIndex] = bookingTime;
-    this.latestBookingTime = bookingTime;
+    if (updateLatest) {
+      this.latestBookingTime = bookingTime;
+    }
+
     this.updateLocaleStoreage();
   }
 
@@ -106,7 +127,7 @@ export class AppService {
   }
 
   public downloadPDF(name: string, tableHTML: string) {
-    var style = '<style> table{width:100%;}  th, td {  border: 1px solid #f2f2f2; }    thead { background: #ffffff; text-align:left;  color: #5c5c5c; }  .table th,    .table td {   padding: 10px 10px; font-size: 11px;  } </style>';
+    var style = '<style> table{width:100%;}  th, td {  border: 1px solid #f2f2f2; }    thead { background: #ffffff; text-align:left;  color: #5c5c5c; }  .table th,    .table td {   padding: 5px 10px; font-size: 11px;  } </style>';
 
     var win = window.open('', '', 'height=700,width=700');
 

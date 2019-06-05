@@ -21,13 +21,14 @@
     <div class="export-select" (click)="downloadExcel()">EXCEL</div>
   </div>
 
-  <div style="padding: 10px;margin: 5px;font-size: 13px;" *ngIf="!appService.hasCreditals()">
+  <div style="margin: 5px;font-size: 13px;" *ngIf="!appService.hasCreditals()">
     <a [routerLink]="['/profile']">
       Benutzerdaten eingeben um zu exportieren
     </a>
   </div>
+
   <!-- Current status -->
-  <div style="text-align: center">
+  <div style="text-align: center; overflow: auto;max-height: 60vh;">
 
     <table id="tblBu" class="table table-bordered table-sm">
       <thead>
@@ -38,7 +39,7 @@
         <th>Grund</th>
       </thead>
       <tbody>
-        <tr *ngFor="let bookingTime of bookingTimes">
+        <tr *ngFor="let bookingTime of bookingTimes" (click)="selectedBooking=bookingTime">
 
           <td>{{bookingTime.date}}</td>
           <td>{{bookingTime.clockIn}}</td>
@@ -51,5 +52,12 @@
 
     </table>
   </div>
+  <button (click)="addBooking()" class="btn btn-primary new-booking" style="float:left;margin-top: 15px;">+
+    Stempelung</button>
 
+</div>
+
+<!--Edit TImes modal-->
+<div class="pop-dialog" *ngIf="selectedBooking">
+  <app-booking-time-detail [bookingTime]="selectedBooking" (onCancel)="selectedBooking=null" (onDelete)="deleteBookingTime(selectedBooking)" (onSave)="updateBookingTime($event)"></app-booking-time-detail>
 </div>
