@@ -127,7 +127,7 @@ export class AppService {
   }
 
   public downloadPDF(name: string, tableHTML: string) {
-    var style = '<style> table{width:100%;}  th, td {  border: 1px solid #f2f2f2; }    thead { background: #ffffff; text-align:left;  color: #5c5c5c; }  .table th,    .table td {   padding: 5px 10px; font-size: 11px;  } </style>';
+    var style = '<style> table{width:100%;} .table-striped tbody tr:nth-of-type(odd) {  background-color: rgba(89, 89, 89, 0.05);} .table td{  border-bottom: 1px solid #eaeaea; } table thead th {  vertical-align: bottom; border-bottom: 2px solid #dee2e6;} thead { background: #ffffff; text-align:left;  color: #5c5c5c; }  .table th,    .table td {   padding: 8px 10px; font-size: 11px;  } </style>';
 
     var win = window.open('', '', 'height=700,width=700');
 

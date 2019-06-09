@@ -15,6 +15,7 @@ export class BookingTimesComponent implements AfterViewInit {
   public to: Date;
   public bookingTimes: BookingTime[];
   public selectedBooking: BookingTime;
+  public sumactualTime: string;
 
   constructor(
     public appService: AppService) { }
@@ -55,6 +56,7 @@ export class BookingTimesComponent implements AfterViewInit {
 
     });
     this.bookingTimes = JSON.parse(JSON.stringify(this.bookingTimes));
+    this.calcActualtime();
   }
 
   public downloadExcel() {
@@ -80,5 +82,25 @@ export class BookingTimesComponent implements AfterViewInit {
     this.appService.deleteBookingTime(bookingTime);
     this.selectedBooking = null;
     this.load();
+  }
+
+  private calcActualtime() {
+    let hours = 0;
+    let minutes = 0;
+    this.bookingTimes.forEach(element => {
+
+      if (element.actualTime == null) {
+        return;
+      }
+      const sp = element.actualTime.split(':');
+      hours = hours + Number(sp[0]);
+      minutes = minutes + Number(sp[1]);
+
+    });
+
+    const minutesadd = (minutes / 60);
+    hours = hours + (minutesadd >= 1 ? Math.round(minutesadd) : 0);
+
+    this.sumactualTime = hours + ':' + minutes;
   }
 }

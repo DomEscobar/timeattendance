@@ -17,8 +17,9 @@
   </div>
 
   <div *ngIf="appService.hasCreditals()">
-    <div class="export-select" (click)="downloadPDF()">PDF</div>
-    <div class="export-select" (click)="downloadExcel()">EXCEL</div>
+    <div class="export-select" (click)="downloadPDF()"><img src="assets/pdf.png" />
+      <span>PDF</span></div>
+    <div class="export-select" (click)="downloadExcel()"><img src="assets/excel.png" /><span>EXCEL</span></div>
   </div>
 
   <div style="margin: 5px;font-size: 13px;" *ngIf="!appService.hasCreditals()">
@@ -28,36 +29,44 @@
   </div>
 
   <!-- Current status -->
-  <div style="text-align: center; overflow: auto;max-height: 70vh;">
+  <div class="paper">
+    <div style="text-align: center; overflow: auto;max-height: 70vh;">
+      <table id="tblBu" class="table table-striped table-sm">
+        <thead>
+          <th>Datum</th>
+          <th>Kommen</th>
+          <th>Gehen</th>
+          <th>Istzeit</th>
+          <th>Grund</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bookingTime of bookingTimes" (click)="selectedBooking=bookingTime">
 
-    <table id="tblBu" class="table table-bordered table-sm">
-      <thead>
-        <th>Datum</th>
-        <th>Kommen</th>
-        <th>Gehen</th>
-        <th>Istzeit</th>
-        <th>Grund</th>
-      </thead>
-      <tbody>
-        <tr *ngFor="let bookingTime of bookingTimes" (click)="selectedBooking=bookingTime">
+            <td>{{bookingTime.date}}</td>
+            <td>{{bookingTime.clockIn}}</td>
+            <td>{{bookingTime.clockOut}}</td>
+            <td>{{bookingTime.actualTime}}</td>
+            <td>{{appService.getReason(bookingTime.bsId)}}</td>
 
-          <td>{{bookingTime.date}}</td>
-          <td>{{bookingTime.clockIn}}</td>
-          <td>{{bookingTime.clockOut}}</td>
-          <td>{{bookingTime.actualTime}}</td>
-          <td>{{appService.getReason(bookingTime.bsId)}}</td>
+          </tr>
+        </tbody>
 
-        </tr>
-      </tbody>
+      </table>
+    </div>
 
-    </table>
+
+    <div style="float: right">
+      <span>Gesammt Istzeit : {{sumactualTime}}
+      </span>
+    </div>
+
+    <button (click)="addBooking()" class="btn btn-primary new-booking" style="float:left;margin-top: 15px;">+
+      Stempelung</button>
   </div>
-  <button (click)="addBooking()" class="btn btn-primary new-booking" style="float:left;margin-top: 15px;">+
-    Stempelung</button>
-
 </div>
 
 <!--Edit TImes modal-->
 <div class="pop-dialog" *ngIf="selectedBooking">
-  <app-booking-time-detail [bookingTime]="selectedBooking" (onCancel)="selectedBooking=null" (onDelete)="deleteBookingTime(selectedBooking)" (onSave)="updateBookingTime($event)"></app-booking-time-detail>
+  <app-booking-time-detail [bookingTime]="selectedBooking" (onCancel)="selectedBooking=null"
+    (onDelete)="deleteBookingTime(selectedBooking)" (onSave)="updateBookingTime($event)"></app-booking-time-detail>
 </div>
