@@ -16,6 +16,9 @@
     </div>
   </div>
 
+  <button (click)="addBooking()" class="btn btn-primary new-booking" style="float:right;">+
+    Stempelung</button>
+
   <div *ngIf="appService.hasCreditals()">
     <div class="export-select" (click)="downloadPDF()"><img src="assets/pdf.png" />
       <span>PDF</span></div>
@@ -28,6 +31,8 @@
     </a>
   </div>
 
+  
+
   <!-- Current status -->
   <div class="paper">
     <div style="text-align: center; overflow: auto;max-height: 70vh;">
@@ -36,7 +41,7 @@
           <th>Datum</th>
           <th>Kommen</th>
           <th>Gehen</th>
-          <th>Istzeit</th>
+          <th>Arbeitszeit</th>
           <th>Grund</th>
         </thead>
         <tbody>
@@ -56,12 +61,10 @@
 
 
     <div style="float: right">
-      <span>Gesammt Istzeit : {{sumactualTime}}
+      <span>Gesammte Arbeitszeit : {{sumactualTime}}
       </span>
     </div>
 
-    <button (click)="addBooking()" class="btn btn-primary new-booking" style="float:left;margin-top: 15px;">+
-      Stempelung</button>
   </div>
 </div>
 

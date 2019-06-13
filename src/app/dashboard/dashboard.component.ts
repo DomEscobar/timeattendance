@@ -13,6 +13,7 @@ import * as moment from 'moment';
 export class DashboardComponent implements OnInit {
 
   private dateFormatPipe: DateFormatPipe = new DateFormatPipe();
+  public fillstyle = '';
 
   constructor(
     public appservice: AppService) { }
@@ -24,17 +25,27 @@ export class DashboardComponent implements OnInit {
   public addNewTime() {
 
     if (this.isClockIn()) {
-      const latest = Object.assign({}, this.appservice.latestBookingTime);
-      latest.clockOut = this.dateFormatPipe.transform(new Date(), 'HH:mm');
-      this.appservice.updateBookingTime(latest);
+      this.fillstyle = 'major-fill-red';
+
+      setTimeout(() => {
+        this.fillstyle = '';
+        const latest = Object.assign({}, this.appservice.latestBookingTime);
+        latest.clockOut = this.dateFormatPipe.transform(new Date(), 'HH:mm');
+        this.appservice.updateBookingTime(latest);
+      }, 500);
       return;
     }
 
-    const bookingTime = new BookingTime();
-    bookingTime.bsId = this.appservice.selectedBookingKey.id;
-    bookingTime.clockIn = this.dateFormatPipe.transform(new Date(), 'HH:mm');
+    this.fillstyle = 'major-fill';
 
-    this.appservice.addBookingTime(bookingTime);
+    setTimeout(() => {
+      this.fillstyle = '';
+      const bookingTime = new BookingTime();
+      bookingTime.bsId = this.appservice.selectedBookingKey.id;
+      bookingTime.clockIn = this.dateFormatPipe.transform(new Date(), 'HH:mm');
+
+      this.appservice.addBookingTime(bookingTime);
+    }, 500);
   }
 
 
@@ -48,5 +59,9 @@ export class DashboardComponent implements OnInit {
     }
 
     return this.appservice.latestBookingTime.date;
+  }
+
+  public getLiveActual(): string {
+    return moment.utc(moment(new Date()).diff(moment(this.appservice.latestBookingTime.clockIn, 'HH:mm'))).format('HH:mm');
   }
 }

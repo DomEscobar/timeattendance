@@ -9,3 +9,8 @@ label {
   margin-bottom: 0px;
   display: block;
 }
+
+.form-control {
+  font-size: 0.8rem;
+  text-align: center;
+}

@@ -59,12 +59,53 @@ export class AppService {
 
   private updateLocaleStoreage(): void {
     localStorage.setItem(this.TIMES, window.btoa(JSON.stringify(this.bookingTimes)));
+    this.fetchLatestBookingTime();
+  }
+
+  private fetchLatestBookingTime(): void {
+    const now = new Date();
+    let closest: BookingTime = null;
+
+    const todays = this.bookingTimes.filter(o => moment(o.date, 'DD.MM.YYYY').isSame(moment(), 'day'));
+
+    for (let d of todays) {
+
+      if (closest == null) {
+        closest = JSON.parse(JSON.stringify(d));
+        continue;
+      }
+
+      let date = moment(d.date, 'DD.MM.YYYY').toDate();
+      let closestdate = moment(closest.date, 'DD.MM.YYYY').toDate();
+
+      date = this.initTime(d, date);
+      closestdate = this.initTime(closest, closestdate);
+
+      if (date <= now && date > closestdate) {
+        closest = JSON.parse(JSON.stringify(d));
+      }
+    }
+
+    this.latestBookingTime = closest;
     localStorage.setItem(this.LATEST, JSON.stringify(this.latestBookingTime));
   }
 
+  private initTime(d: BookingTime, date: Date): Date {
+    date.setHours(Number(d.clockIn.split(':')[0]));
+    date.setMinutes(Number(d.clockIn.split(':')[1]));
+
+    if (d.clockOut != null && d.clockOut !== '') {
+      date.setHours(Number(d.clockOut.split(':')[0]));
+      date.setMinutes(Number(d.clockOut.split(':')[1]));
+    }
+
+    return date;
+  }
+
+
   public deleteBookingTime(bookingTime: BookingTime): void {
 
-    if (this.latestBookingTime.guid === bookingTime.guid) {
+    if (this.latestBookingTime != null && this.latestBookingTime.guid === bookingTime.guid) {
       toastr.error('Eine aktuelle Stempelung kann nicht gelöscht werden', 'Fehler');
       return;
     }
@@ -86,7 +127,7 @@ export class AppService {
       return;
     }
 
-    if (bookingTime.clockOut != null || bookingTime.clockOut != '') {
+    if (bookingTime.clockOut != null && bookingTime.clockOut != '') {
       bookingTime.actualTime = moment.utc(moment(bookingTime.clockOut, 'HH:mm').diff(moment(bookingTime.clockIn, 'HH:mm'))).format('HH:mm');
     }
 

@@ -1,7 +1,8 @@
 <div class="container-fluid" style="max-width: 400px; text-align: center;margin-top:7%;">
 
   <div style="text-align: center">
-    <div (click)="addNewTime()" class="animate-all circle-button {{isClockIn() ? 'clock-out' : 'clock-in'}}">
+    <div (click)="addNewTime()"
+      class="animate-all {{fillstyle}} circle-button {{isClockIn() ? 'clock-out' : 'clock-in'}}">
       <p>{{isClockIn() ? 'Ausstempeln' : 'Einstempeln'}}</p>
     </div>
 
@@ -19,17 +20,22 @@
     <div style="padding: 15px;" *ngIf="appservice.latestBookingTime==null">Keine Stempelung</div>
 
     <div *ngIf="appservice.latestBookingTime" class="latest-status {{isClockIn() ? 'clock-in-txt' : 'clock-out-txt'}}">
-      <span [class]="isClockIn() ? 'pulse-effect' : ''"> {{isClockIn() ? 'Eingestempelt' : 'Ausgestempelt'}} </span>
+
+      <span [class]="isClockIn() ? 'pulse-effect' : ''"> {{isClockIn() ? 'Eingestempelt' : 'Ausgestempelt'}}</span>
     </div>
 
     <div *ngIf="appservice.latestBookingTime" class="latest-detail row">
       <div class="col col-sm-6" style="border-right: 1px solid #e8e8e8;">
-        <label>Uhrzeit</label>
+        <label>Um</label>
         <span>{{isClockIn() ? appservice.latestBookingTime.clockIn : appservice.latestBookingTime.clockOut}}</span>
       </div>
-      <div class="col col-sm-6">
+      <div class="col col-sm-6" *ngIf="isClockIn()">
         <label>Grund</label>
         <span>{{appservice.getReason(this.appservice.latestBookingTime?.bsId)}}</span>
+      </div>
+      <div class="col col-sm-6" *ngIf="!isClockIn()">
+        <label>Arbeitszeit</label>
+        <span>{{appservice.latestBookingTime.actualTime}}</span>
       </div>
     </div>
   </div>
