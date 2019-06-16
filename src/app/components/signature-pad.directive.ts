@@ -24,15 +24,15 @@ export class SignaturePadDirective implements AfterViewInit {
       if (data == null) {
         return;
       }
-      this.appService.user.signature = this.signaturePad.toDataURL();
+      this.appService.getUser().signature = this.signaturePad.toDataURL();
     });
   }
 
   ngAfterViewInit() {
     this.signaturePad = new SignaturePad(this.elementRef.nativeElement);
 
-    if (this.appService.user.signature) {
-      this.signaturePad.fromDataURL(this.appService.user.signature);
+    if (this.appService.getUser().signature) {
+      this.signaturePad.fromDataURL(this.appService.getUser().signature);
     }
   }
 

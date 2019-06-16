@@ -61,6 +61,16 @@ export class DashboardComponent implements OnInit {
     return this.appservice.latestBookingTime.date;
   }
 
+  public getBookingTimesOfLatestDate(): BookingTime[] {
+    if (this.appservice.latestBookingTime == null || this.appservice.bookingTimes == null) {
+      return [];
+    }
+
+    const latestDate = moment(this.appservice.latestBookingTime.date, 'DD.MM.YYYY');
+
+    return this.appservice.bookingTimes.filter(o => moment(o.date, 'DD.MM.YYYY').isSame(latestDate));
+  }
+
   public getLiveActual(): string {
     return moment.utc(moment(new Date()).diff(moment(this.appservice.latestBookingTime.clockIn, 'HH:mm'))).format('HH:mm');
   }

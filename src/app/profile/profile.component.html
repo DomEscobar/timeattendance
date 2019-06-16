@@ -1,24 +1,41 @@
-<div class="container-fluid" style="    max-width: 900px; margin-top: 20%;">
+<div class="container-fluid" style="    max-width: 900px; margin-top: 12%;">
 
-  <div class="row" *ngIf="appservice.user">
-    <div class="col-sm-6 col-md-4">
+  <div class="row" *ngIf="user">
+    <div class="col-sm-6 col-md-4" style="margin-bottom: 15px;">
       <label>Vorname</label>
-      <input class="form-control" [(ngModel)]="appservice.user.firstname" />
+      <input class="form-control" [(ngModel)]="user.firstname" />
     </div>
-    <div class="col-sm-6 col-md-4">
+    <div class="col-sm-6 col-md-4" style="margin-bottom: 15px;">
       <label>Nachname</label>
-      <input class="form-control" [(ngModel)]="appservice.user.lastname" />
+      <input class="form-control" [(ngModel)]="user.lastname" />
     </div>
-    <div class="col-sm-12 col-md-4" style="text-align: center">
-      <label>Unterschrift</label><br>
-      <canvas appSignaturePad style="border: 1px solid #dadada;" class="signature-pad" [onClear]="onSignatureClear"
+    <div class="col-sm-12 col-md-4" style="text-align: right;">
+      <button (click)="addDetail()" class="btn btn-primary new-booking" style="margin-top: 15px">+
+        Detail
+      </button>
+    </div>
+
+    <div class="col-sm-12 col-md-4" style="text-align: left;position: relative;"
+      *ngFor="let detail of user.userDetails">
+      <div>
+        <label>{{detail.name}}</label>
+        <input class="form-control" [(ngModel)]="detail.value" />
+      </div>
+      <img class="del-ico" (click)="deleteDetail(detail)" src="assets/garbage.png" />
+    </div>
+
+    <!--
+      <div class="col-sm-12 col-md-4" style="text-align: center">
+        <label>Unterschrift</label>
+        <canvas appSignaturePad style="border: 1px solid #dadada;" class="signature-pad" [onClear]="onSignatureClear"
         width="300" height="100">
       </canvas>
       <div class="mini-button " (click)="newSignature()">neu</div>
     </div>
+  -->
   </div>
 
-
+  <hr>
   <div class="" style="margin-top: 20px">
     <div class="">
       <button class="btn btn-success" (click)="save()">Speichern</button>

@@ -1,9 +1,11 @@
+import { UserDetail } from './userDetail';
 export class User {
 
     public guid = '';
     public firstname = '';
     public lastname = '';
     public signature?: string;
+    public userDetails: UserDetail[] = new Array();
 
     constructor(data?) {
         if (data) {
@@ -13,7 +15,7 @@ export class User {
                 }
             }
         }
-
+        
         if (this.guid === '') {
             this.createGuid();
         }

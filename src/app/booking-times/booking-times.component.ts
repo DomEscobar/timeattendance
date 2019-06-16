@@ -67,7 +67,7 @@ export class BookingTimesComponent implements AfterViewInit {
   public downloadPDF() {
     const ele = document.getElementById('tblBu').outerHTML;
     // tslint:disable-next-line: max-line-length
-    this.appService.downloadPDF(moment(this.from).format('DD.MM.YYYY') + ' - ' + moment(this.to).format('DD.MM.YYYY') + ' - ' + this.appService.user.firstname, ele);
+    this.appService.downloadPDF(ele, moment(this.from).format('DD.MM.YYYY'), moment(this.to).format('DD.MM.YYYY') , this.appService.getUser(), this.sumactualTime);
   }
 
   public updateBookingTime(bookingTime: BookingTime) {

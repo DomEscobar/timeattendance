@@ -3,9 +3,8 @@ import { User } from '../models/user';
 import { BookingTime } from '../models/bookingTime';
 import { BookingKey } from '../models/bookingKey';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
-import { toBase64String } from '@angular/compiler/src/output/source_map';
 declare const toastr: any;
 
 @Injectable({
@@ -17,7 +16,9 @@ export class AppService {
   private readonly TIMES = 'zt-bt';
   private readonly LATEST = 'zt-iw';
 
-  public user: User;
+  private userSub: BehaviorSubject<User> = new BehaviorSubject(new User());
+  public user$: Observable<User> = this.userSub.asObservable();
+
   public bookingTimes: BookingTime[] = new Array();
   public bookingKeys: BookingKey[];
   public latestBookingTime: BookingTime;
@@ -41,10 +42,10 @@ export class AppService {
     const userEncrypt = localStorage.getItem(this.USER);
 
     if (userEncrypt == null) {
-      this.user = new User();
+      this.userSub.next(new User());
       return;
     }
-    this.user = new User(JSON.parse(window.atob(userEncrypt)));
+    this.userSub.next(new User(JSON.parse(window.atob(userEncrypt))));
   }
 
   private initBookingTimes(): void {
@@ -139,8 +140,13 @@ export class AppService {
     this.updateLocaleStoreage();
   }
 
-  public updateUser(): void {
-    localStorage.setItem(this.USER, window.btoa(JSON.stringify(this.user)));
+  public getUser(): User {
+    return this.userSub.getValue();
+  }
+
+  public updateUser(user: User): void {
+    this.userSub.next(user);
+    localStorage.setItem(this.USER, window.btoa(JSON.stringify(this.getUser())));
   }
 
   public getReason(bsId: number): string {
@@ -152,10 +158,10 @@ export class AppService {
   }
 
   public hasCreditals(): boolean {
-    if (this.user == null) {
+    if (this.getUser() == null) {
       return false;
     }
-    return this.user.firstname !== '' && this.user.lastname !== '';
+    return this.getUser().firstname !== '' && this.getUser().lastname !== '';
   }
 
   public downloadExcel(element: HTMLElement) {
@@ -167,17 +173,27 @@ export class AppService {
     window.location.href = uri + base64(format(template, ctx));
   }
 
-  public downloadPDF(name: string, tableHTML: string) {
-    var style = '<style> table{width:100%;} .table-striped tbody tr:nth-of-type(odd) {  background-color: rgba(89, 89, 89, 0.05);} .table td{  border-bottom: 1px solid #eaeaea; } table thead th {  vertical-align: bottom; border-bottom: 2px solid #dee2e6;} thead { background: #ffffff; text-align:left;  color: #5c5c5c; }  .table th,    .table td {   padding: 8px 10px; font-size: 11px;  } </style>';
+  public downloadPDF(tableHTML: string, from: string, to: string, user: User, sumactualTime: string) {
+    var style = '<style> @page { margin: 0; }  @media print {      @page { margin: 0; }      body { margin: 1.6cm; }  }  p{font-size:12px;} table{width:100%;} .table-striped tbody tr:nth-of-type(odd) {  background-color: rgba(89, 89, 89, 0.05);} .table td{ text-align:center; border-bottom: 1px solid #eaeaea; } table thead th { text-align:center; vertical-align: bottom; border-bottom: 2px solid #dee2e6;} thead { background: #ffffff; text-align:left;  color: #5c5c5c; }  .table th,    .table td {   padding: 8px 10px; font-size: 11px;  } </style>';
 
     var win = window.open('', '', 'height=700,width=700');
 
     win.document.write('<html><head>');
-    win.document.write('<title>' + name + '</title>');
+    win.document.write('<title>' + from + ' - ' + to + '_' + user.lastname + '_' + user.lastname + '</title>');
     win.document.write(style);
     win.document.write('</head>');
     win.document.write('<body>');
+    win.document.write('<p style="float:right;"><b> Zeitraum </b> : ' + from + ' - ' + to + ' </p>');
+
+
+    win.document.write('<p> <b>Name, Vorname </b>: ' + user.lastname + ', ' + user.firstname + ' </p>');
+
+    for (let detail of user.userDetails) {
+      win.document.write('<p><b> ' + detail.name + ' </b> : ' + detail.value + ' </p>');
+    }
+
     win.document.write(tableHTML);
+    win.document.write('    <div style="padding: 5px; font-size: 14px; border-top: 1px solid black;"> Gesammte Arbeitszeit :' + sumactualTime + '</div>');
     win.document.write('</body></html>');
 
     win.document.close();

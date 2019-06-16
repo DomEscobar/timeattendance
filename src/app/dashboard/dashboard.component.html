@@ -48,13 +48,13 @@
 
     <table class="table table-bordered table-sm">
       <thead>
-        <th>Eingestempelt</th>
-        <th>Ausgestempelt</th>
-        <th>Istzeit</th>
+        <th>Von</th>
+        <th>Bis</th>
+        <th>Arbeitszeit</th>
         <th>Grund</th>
       </thead>
       <tbody>
-        <tr *ngFor="let bookingTime of appservice.bookingTimes">
+        <tr *ngFor="let bookingTime of getBookingTimesOfLatestDate()">
 
           <td>{{bookingTime.clockIn}}</td>
           <td>{{bookingTime.clockOut}}</td>
