@@ -21,7 +21,7 @@
 
     <div *ngIf="appservice.latestBookingTime" class="latest-status {{isClockIn() ? 'clock-in-txt' : 'clock-out-txt'}}">
 
-      <span [class]="isClockIn() ? 'pulse-effect' : ''"> {{isClockIn() ? 'Eingestempelt' : 'Ausgestempelt'}}</span>
+      <span [class]="isClockIn() ? '' : ''"> {{isClockIn() ? 'Eingestempelt' : 'Ausgestempelt'}}</span>
     </div>
 
     <div *ngIf="appservice.latestBookingTime" class="latest-detail row">
@@ -46,7 +46,7 @@
     <h4 style="">Verlauf</h4>
     <label>{{getDateFormated()}}</label>
 
-    <table class="table table-bordered table-sm">
+    <table class="table table-striped table-sm">
       <thead>
         <th>Von</th>
         <th>Bis</th>

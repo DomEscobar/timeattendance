@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.less']
 })
 export class AppComponent {
-  title = 'simpleZeiterfassung';
+
+  constructor() {
+    const darkTheme = localStorage.getItem('isDark');
+    (<HTMLLinkElement>document.getElementById('theme')).href = darkTheme == '1' ? 'assets/themes/dark.css' : 'assets/themes/white.css';
+
+  }
 }

@@ -21,7 +21,8 @@
         <label>{{detail.name}}</label>
         <input class="form-control" [(ngModel)]="detail.value" />
       </div>
-      <img class="del-ico" (click)="deleteDetail(detail)" src="assets/garbage.png" />
+      <i-feather class="del-ico" (click)="deleteDetail(detail)"  name="trash"></i-feather>
+
     </div>
 
     <!--
@@ -37,10 +38,21 @@
 
   <hr>
   <div class="" style="margin-top: 20px">
-    <div class="">
-      <button class="btn btn-success" (click)="save()">Speichern</button>
-    </div>
+
+    <app-save-panel [objectToSave]="[user, user.userDetails]" (onSave)="save()"
+      (onCancel)="user=$event[0]; user.userDetails = $event[1];">
+    </app-save-panel>
+
   </div>
 
+  <br>
+
+  <label>Theme</label>
+  <div class="theme-btn b {{isDark ? 'ison':''}}" (click)="setDark(true)">
+    <i-feather name="moon"></i-feather>
+  </div>
+  <div class="theme-btn w {{!isDark ? 'ison':''}}" (click)="setDark(false)">
+    <i-feather name="sun"></i-feather>
+  </div>
 
 </div>

@@ -18,6 +18,16 @@ import { ModalDirective } from './components/modal.directive';
 import { TimeInputComponent } from './components/time-input/time-input.component';
 import { AboutComponent } from './about/about.component';
 import 'moment/locale/de';
+import { SavePanelComponent } from './components/save-panel/save-panel.component';
+import { FeatherModule } from 'angular-feather';
+import { Hexagon, Moon, Sun, Trash } from 'angular-feather/icons';
+
+const icons = {
+  Hexagon,
+  Moon,
+  Sun,
+  Trash
+};
 
 @NgModule({
   declarations: [
@@ -31,7 +41,8 @@ import 'moment/locale/de';
     BookingTimeDetailComponent,
     ModalDirective,
     TimeInputComponent,
-    AboutComponent
+    AboutComponent,
+    SavePanelComponent
   ],
   imports: [
     BrowserModule,
@@ -39,6 +50,7 @@ import 'moment/locale/de';
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    FeatherModule.pick(icons),
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],

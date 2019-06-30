@@ -13,11 +13,14 @@ export class ProfileComponent implements AfterViewInit {
 
   public onSignatureClear: boolean;
   public user: User;
+  public isDark: boolean;
 
   constructor(public appservice: AppService) {
     this.appservice.user$.subscribe(data => {
       this.user = JSON.parse(JSON.stringify(data));
     });
+
+    this.isDark = localStorage.getItem('isDark') === '1';
   }
 
   ngAfterViewInit() {
@@ -47,4 +50,11 @@ export class ProfileComponent implements AfterViewInit {
   public deleteDetail(detail: UserDetail): void {
     this.user.userDetails = this.user.userDetails.filter(o => o.guid !== detail.guid);
   }
+
+  public setDark(isDark: boolean) {
+    this.isDark = isDark;
+    localStorage.setItem('isDark', isDark == true ? '1' : '0');
+    (<HTMLLinkElement>document.getElementById('theme')).href = isDark ? 'assets/themes/dark.css' : 'assets/themes/white.css';
+  }
+
 }
