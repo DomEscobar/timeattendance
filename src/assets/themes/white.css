@@ -8,8 +8,7 @@
   color: #3cc84e;
 }
 
-label
-{
+label {
   color: gray;
 }
 
@@ -18,6 +17,10 @@ thead {
   color: #5c5c5c;
 }
 
-input{
+input {
   border-color: #e5e5e5 !important;
+}
+
+.preLoader-bg {
+  background: white;
 }

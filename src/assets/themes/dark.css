@@ -67,3 +67,11 @@ input
     border: 0px !important;
     background: #010d16;
 }
+
+.form-control:focus {
+    color: #495057 !important;
+  }
+
+  .preLoader-bg {
+      background: black;
+  }
