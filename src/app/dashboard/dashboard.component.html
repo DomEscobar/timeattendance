@@ -31,7 +31,7 @@
       </div>
       <div class="col col-sm-6" *ngIf="isClockIn()">
         <label>Grund</label>
-        <span>{{appservice.getReason(this.appservice.latestBookingTime?.bsId)}}</span>
+        <span>{{appservice.getReason(this.appservice.latestBookingTime?.bookingkeyId)}}</span>
       </div>
       <div class="col col-sm-6" *ngIf="!isClockIn()">
         <label>Arbeitszeit</label>
@@ -59,7 +59,7 @@
           <td>{{bookingTime.clockIn}}</td>
           <td>{{bookingTime.clockOut}}</td>
           <td>{{bookingTime.actualTime}}</td>
-          <td>{{appservice.getReason(bookingTime.bsId)}}</td>
+          <td>{{appservice.getReason(bookingTime.bookingkeyId)}}</td>
 
         </tr>
       </tbody>

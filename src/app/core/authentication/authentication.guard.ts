@@ -12,7 +12,7 @@ export class AuthenticationGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> {
 
     if (!this.appService.isOnline) {
-      return;
+      return true;
     }
 
     if (this.appService.isAuthenticated()) {

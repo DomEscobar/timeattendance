@@ -4,9 +4,8 @@ declare var unescape: any;
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import server from '../../assets/server.json';
-import { Loading } from '../../../../timeAdmin/src/static/loading/Loading';
-import { Popup } from '../../../../timeAdmin/src/static/popup/Popup';
-
+import { Loading } from '../../static/loading/Loading';
+import { Popup } from '../../static/popup/Popup';
 
 export class BaseService {
     protected http: HttpClient;

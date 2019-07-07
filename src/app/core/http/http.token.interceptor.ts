@@ -16,12 +16,12 @@ export class HttpTokenInterceptor implements HttpInterceptor {
 
     const user = localStorage.getItem(AppService.USER);
     let userEncrypt;
-
+    
     if (user != null) {
       userEncrypt = new User(JSON.parse(window.atob(user)));
     }
 
-    headersConfig['X-Authorization'] = userEncrypt == null ? '' : userEncrypt.cst;
+    headersConfig['X-Authorization'] = userEncrypt == null || userEncrypt.cst == null ? '' : userEncrypt.cst;
 
     const request = req.clone({ setHeaders: headersConfig });
     return next.handle(request);

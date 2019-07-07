@@ -47,7 +47,7 @@ export class AppService {
     }
 
     this.http.get<BookingKey[]>('assets/bookingKeys.json').subscribe(data => {
-      if (this.bookingKeys == null) {
+      if (this.bookingKeys == null || this.bookingKeys.length === 0) {
         this.bookingKeys = data;
       }
       this.selectedBookingKey = data[0];
@@ -56,7 +56,7 @@ export class AppService {
         this.initUser();
       }
 
-      if (this.bookingTimes == null) {
+      if (this.bookingTimes == null || this.bookingTimes.length === 0) {
         this.initBookingTimes();
         this.latestBookingTime = JSON.parse(localStorage.getItem(this.LATEST));
       }
@@ -194,6 +194,7 @@ export class AppService {
   }
 
   public getReason(bsId: number): string {
+
     if (bsId == null) {
       return ' - ';
     }

@@ -50,7 +50,7 @@
             <td>{{bookingTime.clockIn}}</td>
             <td>{{bookingTime.clockOut}}</td>
             <td>{{bookingTime.actualTime}}</td>
-            <td>{{appService.getReason(bookingTime.bsId)}}</td>
+            <td>{{appService.getReason(bookingTime.bookingkeyId)}}</td>
 
           </tr>
 
@@ -60,7 +60,7 @@
       </table>
     </div>
 
-    <div style="padding: 5px; border-top: 1px solid black; font-size: 14px;">
+    <div style="padding: 5px; font-size: 14px;">
       <span>Gesammte Arbeitszeit : {{sumactualTime}}
       </span>
     </div>

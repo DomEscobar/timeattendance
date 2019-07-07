@@ -4,6 +4,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { BookingTimesComponent } from './booking-times/booking-times.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthenticationGuard } from './core/authentication/authentication.guard';
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [{
   path: '',
@@ -22,6 +23,10 @@ const routes: Routes = [{
   path: 'stomp',
   component: DashboardComponent,
   canActivate: [AuthenticationGuard]
+},
+{
+  path: 'login',
+  component: LoginComponent
 }];
 
 @NgModule({
