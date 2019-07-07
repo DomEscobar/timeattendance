@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppService } from '../../services/app.service';
+import { User } from '../../models/user';
 
 @Injectable()
 export class HttpTokenInterceptor implements HttpInterceptor {
@@ -13,10 +14,14 @@ export class HttpTokenInterceptor implements HttpInterceptor {
       'Accept': 'application/json'
     };
 
-    const token = this.appservice.getUser();
+    const user = localStorage.getItem(AppService.USER);
+    let userEncrypt;
 
-    headersConfig['X-Authorization'] = token == null ? '' : token.cst;
+    if (user != null) {
+      userEncrypt = new User(JSON.parse(window.atob(user)));
+    }
 
+    headersConfig['X-Authorization'] = userEncrypt == null ? '' : userEncrypt.cst;
 
     const request = req.clone({ setHeaders: headersConfig });
     return next.handle(request);

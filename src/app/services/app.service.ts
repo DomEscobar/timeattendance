@@ -13,13 +13,14 @@ import { UserDetail } from '../models/userDetail';
 @Injectable({
   providedIn: 'root'
 })
+
 export class AppService {
 
-  private readonly USER = 'zt-u';
+  public static readonly USER = 'zt-u';
   private readonly TIMES = 'zt-bt';
   private readonly LATEST = 'zt-iw';
 
-  private userSub: BehaviorSubject<User> = new BehaviorSubject(new User());
+  private userSub: BehaviorSubject<User> = new BehaviorSubject(null);
   public user$: Observable<User> = this.userSub.asObservable();
 
   public bookingTimes: BookingTime[] = new Array();
@@ -63,7 +64,7 @@ export class AppService {
   }
 
   private initUser(): void {
-    const userEncrypt = localStorage.getItem(this.USER);
+    const userEncrypt = localStorage.getItem(AppService.USER);
 
     if (userEncrypt == null) {
       this.userSub.next(new User());
@@ -180,16 +181,16 @@ export class AppService {
 
   public setUser(user: User): void {
     this.userSub.next(user);
-    localStorage.setItem(this.USER, window.btoa(JSON.stringify(this.getUser())));
+    localStorage.setItem(AppService.USER, window.btoa(JSON.stringify(this.getUser())));
   }
 
   public updateUser(user: User): void {
     this.userSub.next(user);
-    localStorage.setItem(this.USER, window.btoa(JSON.stringify(this.getUser())));
+    localStorage.setItem(AppService.USER, window.btoa(JSON.stringify(this.getUser())));
   }
 
   public isAuthenticated(): boolean {
-    return localStorage.getItem(this.USER) != null;
+    return localStorage.getItem(AppService.USER) != null;
   }
 
   public getReason(bsId: number): string {
