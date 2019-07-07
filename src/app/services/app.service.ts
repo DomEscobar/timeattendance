@@ -41,18 +41,24 @@ export class AppService {
         this.bookingKeys = keys;
         this.userDetails = await this.apiService.getAllUserDetails().toPromise();
         this.bookingTimes = await this.apiService.getAllBookingTimesByUserId(this.getUser().userid).toPromise();
-        this.fetchLatestBookingTime();
+        this.updateLocaleStoreage();
       });
-      return;
     }
 
-
     this.http.get<BookingKey[]>('assets/bookingKeys.json').subscribe(data => {
-      this.bookingKeys = data;
+      if (this.bookingKeys == null) {
+        this.bookingKeys = data;
+      }
       this.selectedBookingKey = data[0];
-      this.initUser();
-      this.initBookingTimes();
-      this.latestBookingTime = JSON.parse(localStorage.getItem(this.LATEST));
+
+      if (this.getUser() == null) {
+        this.initUser();
+      }
+
+      if (this.bookingTimes == null) {
+        this.initBookingTimes();
+        this.latestBookingTime = JSON.parse(localStorage.getItem(this.LATEST));
+      }
     });
   }
 
@@ -174,6 +180,7 @@ export class AppService {
 
   public setUser(user: User): void {
     this.userSub.next(user);
+    localStorage.setItem(this.USER, window.btoa(JSON.stringify(this.getUser())));
   }
 
   public updateUser(user: User): void {
@@ -181,12 +188,16 @@ export class AppService {
     localStorage.setItem(this.USER, window.btoa(JSON.stringify(this.getUser())));
   }
 
+  public isAuthenticated(): boolean {
+    return localStorage.getItem(this.USER) != null;
+  }
+
   public getReason(bsId: number): string {
     if (bsId == null) {
       return ' - ';
     }
 
-    return this.bookingKeys.find(o => o.id === bsId).name;
+    return this.bookingKeys.find(o => o.bookingKeyId == bsId).name;
   }
 
   public hasCreditals(): boolean {
@@ -221,7 +232,7 @@ export class AppService {
     win.document.write('<p> <b>Name, Vorname </b>: ' + user.lastname + ', ' + user.firstname + ' </p>');
 
     for (let detail of user.userDetails) {
-      win.document.write('<p><b> ' + detail.name + ' </b> : ' + detail.value + ' </p>');
+      win.document.write('<p><b> ' + this.getNameOfDetail(detail.detailid) + ' </b> : ' + detail.value + ' </p>');
     }
 
     win.document.write(tableHTML);

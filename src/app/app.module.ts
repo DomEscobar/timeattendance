@@ -15,7 +15,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { BookingTimeDetailComponent } from './booking-times/booking-time-detail/booking-time-detail.component';
 import { ModalDirective } from './components/modal.directive';
 import { TimeInputComponent } from './components/time-input/time-input.component';
-import { AboutComponent } from './about/about.component';
 import 'moment/locale/de';
 import { SavePanelComponent } from './components/save-panel/save-panel.component';
 import { FeatherModule } from 'angular-feather';
@@ -49,7 +48,6 @@ const icons = {
     BookingTimeDetailComponent,
     ModalDirective,
     TimeInputComponent,
-    AboutComponent,
     SavePanelComponent,
     LoginComponent
   ],

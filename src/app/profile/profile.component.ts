@@ -4,7 +4,6 @@ import { UserDetail } from '../models/userDetail';
 import { User } from '../models/user';
 import { UserDetailRelation } from '../models/userDetailRelation';
 import { ApiService } from '../services/api.service';
-import { AuthenticationService } from '../core/authentication/authentication.service';
 declare const toastr: any;
 
 @Component({
@@ -18,21 +17,19 @@ export class ProfileComponent implements OnInit {
   public isDark: boolean;
 
   constructor(
-    private authenticationService: AuthenticationService,
     private apiService: ApiService,
     public appservice: AppService) {
   }
 
   async ngOnInit() {
     try {
+      this.user = JSON.parse(JSON.stringify(this.appservice.getUser()));
 
       if (this.appservice.isOnline) {
-        this.user = JSON.parse(JSON.stringify(this.authenticationService.getLoggedUser()));
+        this.user = JSON.parse(JSON.stringify(this.appservice.getUser()));
         this.user.userDetails = await this.apiService.getUserDetailsByUserId(this.user.userid).toPromise();
-      }
-      else {
+      } else {
         this.appservice.user$.subscribe(data => {
-          this.user = JSON.parse(JSON.stringify(data));
         });
       }
 

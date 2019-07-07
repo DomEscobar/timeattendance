@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
-import { AuthenticationService } from '../authentication/authentication.service';
+import { AppService } from '../../services/app.service';
 
 @Injectable()
 export class HttpTokenInterceptor implements HttpInterceptor {
-  constructor(private authenticationService: AuthenticationService) { }
+  constructor(private appservice: AppService) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const headersConfig = {
@@ -14,9 +13,9 @@ export class HttpTokenInterceptor implements HttpInterceptor {
       'Accept': 'application/json'
     };
 
-    const token = this.authenticationService.getToken();
+    const token = this.appservice.getUser();
 
-    headersConfig['X-Authorization'] = token || '';
+    headersConfig['X-Authorization'] = token == null ? '' : token.cst;
 
 
     const request = req.clone({ setHeaders: headersConfig });

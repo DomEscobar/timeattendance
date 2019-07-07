@@ -3,11 +3,7 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
 
-import { AuthenticationService } from './authentication/authentication.service';
 import { AuthenticationGuard } from './authentication/authentication.guard';
-import { HttpCacheService } from './http/http-cache.service';
-
-import { CacheInterceptor } from './http/cache.interceptor';
 import { HttpTokenInterceptor } from './http/http.token.interceptor';
 
 @NgModule({
@@ -18,10 +14,7 @@ import { HttpTokenInterceptor } from './http/http.token.interceptor';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true },
-    AuthenticationService,
-    AuthenticationGuard,
-    HttpCacheService,
-    CacheInterceptor
+    AuthenticationGuard
   ]
 })
 export class CoreModule {
