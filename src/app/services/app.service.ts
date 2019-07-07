@@ -37,29 +37,30 @@ export class AppService {
     private apiService: ApiService,
     private http: HttpClient) {
 
+    this.initUser();
+
     if (this.isOnline) {
       this.apiService.getAllBookingKeys().subscribe(async keys => {
         this.bookingKeys = keys;
-        this.userDetails = await this.apiService.getAllUserDetails().toPromise();
-        this.bookingTimes = await this.apiService.getAllBookingTimesByUserId(this.getUser().userid).toPromise();
-        this.updateLocaleStoreage();
-      });
+        if (this.getUser() != null) {
+          this.userDetails = await this.apiService.getAllUserDetails().toPromise();
+          this.bookingTimes = await this.apiService.getAllBookingTimesByUserId(this.getUser().userid).toPromise();
+          this.updateLocaleStoreage();
+        }
+      }, error => this.initOffline());
+
+      return;
     }
 
+    this.initOffline();
+  }
+
+  private initOffline(): void {
     this.http.get<BookingKey[]>('assets/bookingKeys.json').subscribe(data => {
-      if (this.bookingKeys == null || this.bookingKeys.length === 0) {
-        this.bookingKeys = data;
-      }
+      this.bookingKeys = data;
       this.selectedBookingKey = data[0];
-
-      if (this.getUser() == null) {
-        this.initUser();
-      }
-
-      if (this.bookingTimes == null || this.bookingTimes.length === 0) {
-        this.initBookingTimes();
-        this.latestBookingTime = JSON.parse(localStorage.getItem(this.LATEST));
-      }
+      this.initBookingTimes();
+      this.latestBookingTime = JSON.parse(localStorage.getItem(this.LATEST));
     });
   }
 
@@ -67,10 +68,19 @@ export class AppService {
     const userEncrypt = localStorage.getItem(AppService.USER);
 
     if (userEncrypt == null) {
-      this.userSub.next(new User());
+      if (!this.isOnline) {
+        this.userSub.next(new User());
+      }
       return;
     }
-    this.userSub.next(new User(JSON.parse(window.atob(userEncrypt))));
+
+    const user = new User(JSON.parse(window.atob(userEncrypt)));
+
+    if (user.cst == null) {
+      return;
+    }
+
+    this.userSub.next(user);
   }
 
   private initBookingTimes(): void {
@@ -190,7 +200,7 @@ export class AppService {
   }
 
   public isAuthenticated(): boolean {
-    return localStorage.getItem(AppService.USER) != null;
+    return this.getUser() != null;
   }
 
   public getReason(bsId: number): string {

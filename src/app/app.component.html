@@ -1,4 +1,4 @@
-<div class="navbar-n">
+<div class="navbar-n" *ngIf="appService.isAuthenticated()">
     <a style="margin-left: -10px;" [routerLink]="['/stomp']" routerLinkActive="router-link-active">
         <img src="assets/simpleZeIcon.png"  style="width: 25px" />
     </a>
