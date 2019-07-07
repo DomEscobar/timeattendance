@@ -1,0 +1,8 @@
+.loadingPanel {
+  position: fixed;
+  right: 60px;
+  top: 90px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.86);
+  border-radius: 50px;
+}

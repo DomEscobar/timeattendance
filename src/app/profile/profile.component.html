@@ -9,7 +9,7 @@
       <label>Nachname</label>
       <input class="form-control" [(ngModel)]="user.lastname" />
     </div>
-    <div class="col-sm-12 col-md-4" style="text-align: right;">
+    <div *ngIf="!appservice.isOnline" class="col-sm-12 col-md-4" style="text-align: right;">
       <button (click)="addDetail()" class="btn btn-primary new-booking" style="margin-top: 15px">+
         Detail
       </button>
@@ -18,7 +18,7 @@
     <div class="col-sm-12 col-md-4" style="text-align: left;position: relative;"
       *ngFor="let detail of user.userDetails">
       <div>
-        <label>{{detail.name}}</label>
+        <label>{{appservice.getNameOfDetail(detail.detailid)}}</label>
         <input class="form-control" [(ngModel)]="detail.value" />
       </div>
       <i-feather class="del-ico" (click)="deleteDetail(detail)"  name="trash"></i-feather>

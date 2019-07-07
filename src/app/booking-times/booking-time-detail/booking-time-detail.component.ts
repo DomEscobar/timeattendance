@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BookingTime } from '../../models/bookingTime';
 import { AppService } from '../../services/app.service';
 import { BookingKey } from '../../models/bookingKey';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-booking-time-detail',
@@ -21,7 +21,7 @@ export class BookingTimeDetailComponent implements OnInit {
     if (bookingTime == null) return;
 
     this.bookingDate = moment(bookingTime.date, 'DD.MM.YYYY').toDate();
-    this.selectedBookingKey = this.appService.bookingKeys.find(o => o.id === bookingTime.bsId);
+    this.selectedBookingKey = this.appService.bookingKeys.find(o => o.bookingKeyId == bookingTime.bookingkeyId);
     this._bookingTime = JSON.parse(JSON.stringify(bookingTime));
   }
 
@@ -48,7 +48,7 @@ export class BookingTimeDetailComponent implements OnInit {
   }
 
   public save(): void {
-    this.bookingTime.bsId = this.selectedBookingKey.id;
+    this.bookingTime.bookingkeyId = this.selectedBookingKey.bookingKeyId;
     this.onSave.emit(this.bookingTime);
   }
 

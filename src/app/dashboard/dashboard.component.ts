@@ -3,7 +3,7 @@ import { BookingKey } from '../models/bookingKey';
 import { AppService } from '../services/app.service';
 import { BookingTime } from '../models/bookingTime';
 import { DateFormatPipe } from 'ngx-moment';
-import * as moment from 'moment';
+import moment from 'moment';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit {
     setTimeout(() => {
       this.fillstyle = '';
       const bookingTime = new BookingTime();
-      bookingTime.bsId = this.appservice.selectedBookingKey.id;
+      bookingTime.bookingkeyId = this.appservice.selectedBookingKey.bookingKeyId;
       bookingTime.clockIn = this.dateFormatPipe.transform(new Date(), 'HH:mm');
 
       this.appservice.addBookingTime(bookingTime);

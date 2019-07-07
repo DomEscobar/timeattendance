@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, Output, EventEmitter, NgZone, AfterViewInit } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 declare const $: any;
 
 @Component({

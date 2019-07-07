@@ -1,6 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { AppService } from '../services/app.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { BookingTime } from '../models/bookingTime';
 declare const $: any;
 

@@ -4,8 +4,11 @@ import { BookingTime } from '../models/bookingTime';
 import { BookingKey } from '../models/bookingKey';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import * as moment from 'moment';
+import moment from 'moment';
 declare const toastr: any;
+import * as cfg from '../../assets/server.json';
+import { ApiService } from './api.service';
+import { UserDetail } from '../models/userDetail';
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +27,25 @@ export class AppService {
   public latestBookingTime: BookingTime;
   public selectedBookingKey: BookingKey;
 
-  public getSignature: BehaviorSubject<string> = new BehaviorSubject(null);
-  public getSignature$: Observable<any> = this.getSignature.asObservable();
+  public userDetails: UserDetail[];
 
-  constructor(private http: HttpClient) {
+  public isOnline = cfg.url != '';
+
+  constructor(
+
+    private apiService: ApiService,
+    private http: HttpClient) {
+
+    if (this.isOnline) {
+      this.apiService.getAllBookingKeys().subscribe(async keys => {
+        this.bookingKeys = keys;
+        this.userDetails = await this.apiService.getAllUserDetails().toPromise();
+        this.bookingTimes = await this.apiService.getAllBookingTimesByUserId(this.getUser().userid).toPromise();
+        this.fetchLatestBookingTime();
+      });
+      return;
+    }
+
 
     this.http.get<BookingKey[]>('assets/bookingKeys.json').subscribe(data => {
       this.bookingKeys = data;
@@ -103,15 +121,25 @@ export class AppService {
     return date;
   }
 
+  public getNameOfDetail(detailId: number): string {
+
+    const detail = this.userDetails.find(o => o.detailid == detailId);
+
+    if (detail == null) {
+      return '';
+    }
+
+    return detail.name;
+  }
 
   public deleteBookingTime(bookingTime: BookingTime): void {
 
-    if (this.latestBookingTime != null && this.latestBookingTime.guid === bookingTime.guid) {
+    if (this.latestBookingTime != null && this.latestBookingTime.bookingkeyId == bookingTime.bookingkeyId) {
       toastr.error('Eine aktuelle Stempelung kann nicht gelöscht werden', 'Fehler');
       return;
     }
 
-    this.bookingTimes = this.bookingTimes.filter(o => o.guid !== bookingTime.guid);
+    this.bookingTimes = this.bookingTimes.filter(o => o.bookingkeyId != bookingTime.bookingkeyId);
     this.updateLocaleStoreage();
   }
 
@@ -122,7 +150,7 @@ export class AppService {
   }
 
   public updateBookingTime(bookingTime: BookingTime, updateLatest = true): void {
-    const bkTimeIndex = this.bookingTimes.findIndex(o => o.guid === bookingTime.guid);
+    const bkTimeIndex = this.bookingTimes.findIndex(o => o.bookingTimeId == bookingTime.bookingTimeId);
 
     if (bkTimeIndex === -1) {
       return;
@@ -142,6 +170,10 @@ export class AppService {
 
   public getUser(): User {
     return this.userSub.getValue();
+  }
+
+  public setUser(user: User): void {
+    this.userSub.next(user);
   }
 
   public updateUser(user: User): void {

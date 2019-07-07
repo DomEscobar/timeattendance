@@ -2,6 +2,9 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { AppService } from '../services/app.service';
 import { UserDetail } from '../models/userDetail';
 import { User } from '../models/user';
+import { UserDetailRelation } from '../models/userDetailRelation';
+import { ApiService } from '../services/api.service';
+import { AuthenticationService } from '../core/authentication/authentication.service';
 declare const toastr: any;
 
 @Component({
@@ -9,33 +12,42 @@ declare const toastr: any;
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.less']
 })
-export class ProfileComponent implements AfterViewInit {
+export class ProfileComponent implements OnInit {
 
-  public onSignatureClear: boolean;
   public user: User;
   public isDark: boolean;
 
-  constructor(public appservice: AppService) {
-    this.appservice.user$.subscribe(data => {
-      this.user = JSON.parse(JSON.stringify(data));
-    });
-
-    this.isDark = localStorage.getItem('isDark') === '1';
+  constructor(
+    private authenticationService: AuthenticationService,
+    private apiService: ApiService,
+    public appservice: AppService) {
   }
 
-  ngAfterViewInit() {
+  async ngOnInit() {
+    try {
+
+      if (this.appservice.isOnline) {
+        this.user = JSON.parse(JSON.stringify(this.authenticationService.getLoggedUser()));
+        this.user.userDetails = await this.apiService.getUserDetailsByUserId(this.user.userid).toPromise();
+      }
+      else {
+        this.appservice.user$.subscribe(data => {
+          this.user = JSON.parse(JSON.stringify(data));
+        });
+      }
+
+      this.isDark = localStorage.getItem('isDark') === '1';
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   public save(): void {
-    this.appservice.getSignature.next('');
     this.appservice.updateUser(this.user);
     toastr.success('Daten wurden im Cache gespeichert', 'Erfolgreich');
   }
 
-  public newSignature(): void {
-    this.onSignatureClear = !this.onSignatureClear;
-  }
-
+  // -- Offline
   public addDetail(): void {
     const name = prompt("Name der zusaätzlichen Details", "Personalnummer");
     if (name == null) {
@@ -44,11 +56,12 @@ export class ProfileComponent implements AfterViewInit {
     const newDetail = new UserDetail();
     newDetail.name = name;
 
-    this.user.userDetails.push(newDetail);
+    this.appservice.userDetails.push(newDetail);
   }
 
-  public deleteDetail(detail: UserDetail): void {
-    this.user.userDetails = this.user.userDetails.filter(o => o.guid !== detail.guid);
+  //only Offline
+  public deleteDetail(detail: UserDetailRelation): void {
+    this.appservice.userDetails = this.user.userDetails.filter(o => o.userid !== detail.userid);
   }
 
   public setDark(isDark: boolean) {

@@ -8,6 +8,7 @@ import { AboutComponent } from './about/about.component';
 const routes: Routes = [{
   path: '',
   component: DashboardComponent,
+  canActivate: [AuthenticationGuard]
 },
 {
   path: 'bookingTimes',

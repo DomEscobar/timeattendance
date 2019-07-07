@@ -12,7 +12,6 @@ import { environment } from '../environments/environment';
 import { BookingTimesComponent } from './booking-times/booking-times.component';
 import { DatepickerComponent } from './components/datepicker/datepicker.component';
 import { ProfileComponent } from './profile/profile.component';
-import { SignaturePadDirective } from './components/signature-pad.directive';
 import { BookingTimeDetailComponent } from './booking-times/booking-time-detail/booking-time-detail.component';
 import { ModalDirective } from './components/modal.directive';
 import { TimeInputComponent } from './components/time-input/time-input.component';
@@ -21,6 +20,12 @@ import 'moment/locale/de';
 import { SavePanelComponent } from './components/save-panel/save-panel.component';
 import { FeatherModule } from 'angular-feather';
 import { Hexagon, Moon, Sun, Trash } from 'angular-feather/icons';
+import { SuccessPopupComponent } from '../static/popup/success-popup/success-popup.component';
+import { InfoPopupComponent } from '../static/popup/info-popup/info-popup.component';
+import { LoadingComponent } from '../static/loading/loading.component';
+import { ErrorPopupComponent } from '../static/popup/error-popup/error-popup.component';
+import { LoginComponent } from './login/login.component';
+import { CoreModule } from './core/core.module';
 
 const icons = {
   Hexagon,
@@ -31,20 +36,25 @@ const icons = {
 
 @NgModule({
   declarations: [
+    SuccessPopupComponent,
+    InfoPopupComponent,
+    LoadingComponent,
+    ErrorPopupComponent,
     AppComponent,
     DashboardComponent,
     SelectComponent,
     BookingTimesComponent,
     DatepickerComponent,
     ProfileComponent,
-    SignaturePadDirective,
     BookingTimeDetailComponent,
     ModalDirective,
     TimeInputComponent,
     AboutComponent,
-    SavePanelComponent
+    SavePanelComponent,
+    LoginComponent
   ],
   imports: [
+    CoreModule,
     BrowserModule,
     MomentModule,
     HttpClientModule,

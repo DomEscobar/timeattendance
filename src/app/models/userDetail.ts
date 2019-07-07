@@ -1,12 +1,13 @@
+import { Helper } from 'src/static/Helper';
+
 export class UserDetail {
     constructor(
-        public guid?: string,
-        public name?: string,
-        public value?: string
+        public detailid?: number | string,
+        public name?: string
     ) {
-        this.guid = this.createGuid();
-    }
-    private createGuid(): string {
-        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+        if (this.detailid == null) {
+            this.detailid = Helper.createId();
+        }
     }
 }

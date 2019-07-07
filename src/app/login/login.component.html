@@ -1,0 +1,17 @@
+<div class="container-fluid" style="    max-width: 400px; margin:auto; margin-top: 12%;">
+
+  <div class="row">
+    <div class="col-sm-12" style="margin-bottom: 15px;">
+      <label>Benutzername</label>
+      <input class="form-control" [(ngModel)]="username" />
+    </div>
+    <div class="col-sm-12" style="margin-bottom: 15px;">
+      <label>Passwort</label>
+      <input class="form-control" [(ngModel)]="password" />
+    </div>
+  </div>
+
+  <div>
+    <button (click)="login()">Anmelden</button>
+  </div>
+</div>

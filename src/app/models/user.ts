@@ -1,11 +1,12 @@
-import { UserDetail } from './userDetail';
+import { UserDetailRelation } from './userDetailRelation';
 export class User {
 
-    public guid = '';
+    public userid;
     public firstname = '';
     public lastname = '';
-    public signature?: string;
-    public userDetails: UserDetail[] = new Array();
+    public password?;
+    public cst?;
+    public userDetails: UserDetailRelation[] = new Array();
 
     constructor(data?) {
         if (data) {
@@ -15,13 +16,12 @@ export class User {
                 }
             }
         }
-        
-        if (this.guid === '') {
-            this.createGuid();
+        if (this.userid == null) {
+            this.userid = this.createId();
         }
     }
 
-    private createGuid(): string {
+    private createId(): string {
         return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     }
 }
