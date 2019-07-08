@@ -67,4 +67,41 @@ export class ProfileComponent implements OnInit {
     (<HTMLLinkElement>document.getElementById('theme')).href = isDark ? 'assets/themes/dark.css' : 'assets/themes/white.css';
   }
 
+  public setUserDetail(detailid: number, user: User, value): void {
+    const detail = user.userDetails.find(o => Number(o.detailid) === Number(detailid));
+
+    if (detail == null) {
+      const newDetail = new UserDetailRelation();
+      newDetail.detailid = Number(detailid);
+      newDetail.userid = Number(user.userid);
+
+      user.userDetails.push(newDetail);
+
+      newDetail.value = value;
+    }
+
+    detail.value = value;
+  }
+
+  public getUserDetail(detailid: number, user: User): string {
+
+    if (user.userDetails == null) {
+      return '';
+    }
+
+    const detail = user.userDetails.find(o => Number(o.detailid) === Number(detailid));
+
+    if (detail == null) {
+      const newDetail = new UserDetailRelation();
+      newDetail.detailid = Number(detailid);
+      newDetail.userid = Number(user.userid);
+
+      user.userDetails.push(newDetail);
+
+      return newDetail.value;
+    }
+
+    return detail.value;
+  }
+
 }

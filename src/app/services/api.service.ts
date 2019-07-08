@@ -172,7 +172,7 @@ export class ApiService extends BaseService {
   }
 
   public login(username: string, password: string): Observable<User> {
-    return this.post('login.php', { username: username, password: password }, false).pipe(map((response: any) => {
+    return this.post('login.php', { username: username, password: password }, false, false).pipe(map((response: any) => {
       return <User>response;
     }));
 

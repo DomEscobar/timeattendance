@@ -48,7 +48,7 @@ export class BaseService {
      * @param path
      * @param param
      */
-    public post(path: string, creds: any, isShowLoading: boolean = true): Observable<Response> {
+    public post(path: string, creds: any, isShowLoading: boolean = true, isShowError = true): Observable<Response> {
         if (isShowLoading) {
             Loading.show();
         }
@@ -60,7 +60,11 @@ export class BaseService {
                         Loading.hide();
                     }
                 },
-                error => Popup.error(error)
+                error => {
+                    if (isShowError) {
+                        Popup.error(error);
+                    }
+                }
             )
         );
 

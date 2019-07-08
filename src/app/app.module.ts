@@ -19,10 +19,7 @@ import 'moment/locale/de';
 import { SavePanelComponent } from './components/save-panel/save-panel.component';
 import { FeatherModule } from 'angular-feather';
 import { Hexagon, Moon, Sun, Trash } from 'angular-feather/icons';
-import { SuccessPopupComponent } from '../static/popup/success-popup/success-popup.component';
-import { InfoPopupComponent } from '../static/popup/info-popup/info-popup.component';
 import { LoadingComponent } from '../static/loading/loading.component';
-import { ErrorPopupComponent } from '../static/popup/error-popup/error-popup.component';
 import { LoginComponent } from './login/login.component';
 import { CoreModule } from './core/core.module';
 
@@ -35,10 +32,7 @@ const icons = {
 
 @NgModule({
   declarations: [
-    SuccessPopupComponent,
-    InfoPopupComponent,
     LoadingComponent,
-    ErrorPopupComponent,
     AppComponent,
     DashboardComponent,
     SelectComponent,

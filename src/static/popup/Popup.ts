@@ -1,23 +1,20 @@
-import { EventEmitter } from '@angular/core';
 import { Loading } from '../loading/Loading';
+declare const toastr: any;
 
 export class Popup {
-  static onSuccess: EventEmitter<string> = new EventEmitter();
-  static onError: EventEmitter<string> = new EventEmitter();
-  static onInfo: EventEmitter<string> = new EventEmitter();
 
   static success(success = 'Erfolgreich gespeichert') {
     Loading.hide();
-    Popup.onSuccess.emit(success);
+    toastr.error(success, 'Erfolg')
   }
 
   static info(info = 'info') {
     Loading.hide();
-    Popup.onInfo.emit(info);
+    toastr.error(info, 'Info')
   }
 
   static error(error = 'error') {
     Loading.hide();
-    Popup.onError.emit(error);
+    toastr.error(error, 'Error!')
   }
 }

@@ -42,17 +42,21 @@ export class AppService {
     if (this.isOnline) {
       this.apiService.getAllBookingKeys().subscribe(async keys => {
         this.bookingKeys = keys;
-        if (this.getUser() != null) {
-          this.userDetails = await this.apiService.getAllUserDetails().toPromise();
-          this.bookingTimes = await this.apiService.getAllBookingTimesByUserId(this.getUser().userid).toPromise();
-          this.updateLocaleStoreage();
-        }
+        this.userDetails = await this.apiService.getAllUserDetails().toPromise();
+        await this.initOnline();
       }, error => this.initOffline());
 
       return;
     }
 
     this.initOffline();
+  }
+
+  public async initOnline(): Promise<void> {
+    if (this.getUser() != null) {
+      this.bookingTimes = await this.apiService.getAllBookingTimesByUserId(this.getUser().userid).toPromise();
+      this.updateLocaleStoreage();
+    }
   }
 
   private initOffline(): void {

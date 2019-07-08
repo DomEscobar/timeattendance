@@ -16,10 +16,11 @@
     </div>
 
     <div class="col-sm-12 col-md-4" style="text-align: left;position: relative;"
-      *ngFor="let detail of user.userDetails">
+      *ngFor="let detail of appservice.userDetails">
       <div>
         <label>{{appservice.getNameOfDetail(detail.detailid)}}</label>
-        <input class="form-control" [(ngModel)]="detail.value" />
+        <input style="width: 90px" [value]="getUserDetail(detail.detailid, user)"
+        (change)="setUserDetail(detail.detailid, user, $event.target.value)" />
       </div>
       <i-feather class="del-ico" (click)="deleteDetail(detail)"  name="trash"></i-feather>
 
