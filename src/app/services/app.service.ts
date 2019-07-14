@@ -28,7 +28,7 @@ export class AppService {
   public latestBookingTime: BookingTime;
   public selectedBookingKey: BookingKey;
 
-  public userDetails: UserDetail[];
+  public userDetails: UserDetail[] = new Array();
 
   public isOnline = cfg.url != '';
 
@@ -198,7 +198,15 @@ export class AppService {
     localStorage.setItem(AppService.USER, window.btoa(JSON.stringify(this.getUser())));
   }
 
-  public updateUser(user: User): void {
+  public async updateUser(user: User): Promise<void> {
+
+    if (this.isOnline) {
+      await this.apiService.updateUser(user).toPromise();
+      for (const detail of user.userDetails) {
+        await this.apiService.addUserToDetail(Number(detail.userid), Number(detail.detailid), detail.value).toPromise();
+      }
+    }
+
     this.userSub.next(user);
     localStorage.setItem(AppService.USER, window.btoa(JSON.stringify(this.getUser())));
   }

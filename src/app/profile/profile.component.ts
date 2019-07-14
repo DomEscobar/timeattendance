@@ -24,24 +24,45 @@ export class ProfileComponent implements OnInit {
   async ngOnInit() {
     try {
       this.user = JSON.parse(JSON.stringify(this.appservice.getUser()));
-
-      if (this.appservice.isOnline) {
-        this.user = JSON.parse(JSON.stringify(this.appservice.getUser()));
-        this.user.userDetails = await this.apiService.getUserDetailsByUserId(this.user.userid).toPromise();
-      } else {
-        this.appservice.user$.subscribe(data => {
-        });
-      }
-
+      await this.fetchUserDetails(this.user);
       this.isDark = localStorage.getItem('isDark') === '1';
     } catch (e) {
       console.log(e);
     }
   }
 
+  private async fetchUserDetails(user: User): Promise<void> {
+
+    const userDetails = await this.apiService.getAllUserDetails().toPromise();
+
+
+    let currUserDetails = user.userDetails;
+
+    if (this.appservice.isOnline) {
+      await this.apiService.getUserDetailsByUserId(user).toPromise();
+      currUserDetails = currUserDetails.map(o => new UserDetailRelation(o));
+    }
+
+    const details = [];
+    // fill details if not exists at user details
+    userDetails.forEach(detail => {
+      if (currUserDetails.find(o => Number(o.detailid) == Number(detail.detailid)) != null) {
+        details.push(currUserDetails.find(o => Number(o.detailid) == Number(detail.detailid)));
+      } else {
+        const newDetail = new UserDetailRelation();
+        newDetail.detailid = Number(detail.detailid);
+        newDetail.userid = Number(user.userid);
+        details.push(newDetail);
+      }
+    });
+
+    user.userDetails = details;
+  }
+
+
   public save(): void {
     this.appservice.updateUser(this.user);
-    toastr.success('Daten wurden im Cache gespeichert', 'Erfolgreich');
+    toastr.success('Erfolgreich gespeichert', 'Erfolgreich');
   }
 
   // -- Offline
@@ -66,42 +87,4 @@ export class ProfileComponent implements OnInit {
     localStorage.setItem('isDark', isDark == true ? '1' : '0');
     (<HTMLLinkElement>document.getElementById('theme')).href = isDark ? 'assets/themes/dark.css' : 'assets/themes/white.css';
   }
-
-  public setUserDetail(detailid: number, user: User, value): void {
-    const detail = user.userDetails.find(o => Number(o.detailid) === Number(detailid));
-
-    if (detail == null) {
-      const newDetail = new UserDetailRelation();
-      newDetail.detailid = Number(detailid);
-      newDetail.userid = Number(user.userid);
-
-      user.userDetails.push(newDetail);
-
-      newDetail.value = value;
-    }
-
-    detail.value = value;
-  }
-
-  public getUserDetail(detailid: number, user: User): string {
-
-    if (user.userDetails == null) {
-      return '';
-    }
-
-    const detail = user.userDetails.find(o => Number(o.detailid) === Number(detailid));
-
-    if (detail == null) {
-      const newDetail = new UserDetailRelation();
-      newDetail.detailid = Number(detailid);
-      newDetail.userid = Number(user.userid);
-
-      user.userDetails.push(newDetail);
-
-      return newDetail.value;
-    }
-
-    return detail.value;
-  }
-
 }

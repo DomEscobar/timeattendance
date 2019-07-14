@@ -1,6 +1,6 @@
 <div class="navbar-n" *ngIf="appService.isAuthenticated()">
     <a style="margin-left: -10px;" [routerLink]="['/stomp']" routerLinkActive="router-link-active">
-        <img src="assets/simpleZeIcon.png"  style="width: 25px" />
+        <img src="assets/simpleZeIcon.png" style="width: 25px" />
     </a>
     <a [routerLink]="['/profile']">Persönliches</a>
     <a [routerLink]="['/bookingTimes']" routerLinkActive="router-link-active">Stempelungen</a>
@@ -12,6 +12,4 @@
     <img src="assets/simpleZeIcon.png" />
 </div>
 
-<div class="toast-panel">
-    <acc-loading></acc-loading>
-</div>
+<acc-loading></acc-loading>

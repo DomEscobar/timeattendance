@@ -15,14 +15,13 @@
       </button>
     </div>
 
-    <div class="col-sm-12 col-md-4" style="text-align: left;position: relative;"
-      *ngFor="let detail of appservice.userDetails">
+    <div class="col-sm-12 col-md-4" style="text-align: left;position: relative; margin-top: 0px;margin-bottom: 15px; "
+      *ngFor="let detail of user.userDetails">
       <div>
         <label>{{appservice.getNameOfDetail(detail.detailid)}}</label>
-        <input style="width: 90px" [value]="getUserDetail(detail.detailid, user)"
-        (change)="setUserDetail(detail.detailid, user, $event.target.value)" />
+        <input class="form-control"  [(ngModel)]="detail.value" />
       </div>
-      <i-feather class="del-ico" (click)="deleteDetail(detail)"  name="trash"></i-feather>
+      <i-feather *ngIf="!appservice.isOnline" class="del-ico" (click)="deleteDetail(detail)"  name="trash"></i-feather>
 
     </div>
 
