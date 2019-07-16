@@ -165,13 +165,18 @@ export class AppService {
     this.updateLocaleStoreage();
   }
 
-  public addBookingTime(bookingTime: BookingTime): void {
+  public async addBookingTime(bookingTime: BookingTime): Promise<void> {
     this.bookingTimes.unshift(bookingTime);
     this.latestBookingTime = bookingTime;
+
+    if (this.isOnline) {
+      await this.apiService.addBookingTime(bookingTime).toPromise();
+    }
+
     this.updateLocaleStoreage();
   }
 
-  public updateBookingTime(bookingTime: BookingTime, updateLatest = true): void {
+  public async updateBookingTime(bookingTime: BookingTime, updateLatest = true): Promise<void> {
     const bkTimeIndex = this.bookingTimes.findIndex(o => o.bookingTimeId == bookingTime.bookingTimeId);
 
     if (bkTimeIndex === -1) {
@@ -185,6 +190,10 @@ export class AppService {
     this.bookingTimes[bkTimeIndex] = bookingTime;
     if (updateLatest) {
       this.latestBookingTime = bookingTime;
+    }
+
+    if (this.isOnline) {
+      await this.apiService.updateBookingTime(bookingTime).toPromise();
     }
 
     this.updateLocaleStoreage();
@@ -270,5 +279,9 @@ export class AppService {
 
   public logout(): void {
     localStorage.clear();
+    this.setUser(null);
+    this.bookingTimes = [];
+    this.latestBookingTime = null;
+    this.userDetails = [];
   }
 }

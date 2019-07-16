@@ -8,7 +8,7 @@
     {{'Abbrechen'}}
   </a>
 
-  <button (click)="save()" class="btn btn-success" style="font-size: 10px;">
+  <button (click)="save()" class="btn btn-success" style="font-size: 10px;" *ngIf="isOpen">
     Speichern</button>
 
   <i *ngIf="withPreview" style="cursor:pointer" (click)="showprev()" class="material-icons">visibility</i>

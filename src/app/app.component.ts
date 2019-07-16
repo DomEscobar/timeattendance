@@ -24,6 +24,6 @@ export class AppComponent {
 
   public signOut(): void {
     this.appService.logout();
-    location.reload();
+    this.router.navigate(['login']);
   }
 }

@@ -5,12 +5,12 @@ export class Popup {
 
   static success(success = 'Erfolgreich gespeichert') {
     Loading.hide();
-    toastr.error(success, 'Erfolg')
+    toastr.success(success, 'Erfolg')
   }
 
   static info(info = 'info') {
     Loading.hide();
-    toastr.error(info, 'Info')
+    toastr.info(info, 'Info')
   }
 
   static error(error = 'error') {

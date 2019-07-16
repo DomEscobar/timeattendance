@@ -8,7 +8,7 @@
 
     <div *ngIf=!isClockIn()>
       <label>Grund</label>
-      <app-select [options]="appservice.bookingKeys" [(selected)]="appservice.selectedBookingKey"></app-select>
+      <app-select [options]="bookingKeys" [(selected)]="appservice.selectedBookingKey"></app-select>
     </div>
   </div>
 

@@ -14,12 +14,13 @@ export class DashboardComponent implements OnInit {
 
   private dateFormatPipe: DateFormatPipe = new DateFormatPipe();
   public fillstyle = '';
+  public bookingKeys: BookingKey[];
 
   constructor(
     public appservice: AppService) { }
 
   ngOnInit() {
-
+    this.bookingKeys = this.appservice.bookingKeys;
   }
 
   public addNewTime() {

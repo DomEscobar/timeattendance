@@ -24,6 +24,7 @@ import { LoginComponent } from './login/login.component';
 import { CoreModule } from './core/core.module';
 import { NFC, Ndef } from '@ionic-native/nfc/ngx';
 import { LoadingPanelComponent } from './components/loading-panel/loading-panel.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 const icons = {
   Hexagon,
@@ -58,7 +59,7 @@ const icons = {
     FormsModule,
     FeatherModule.pick(icons)
   ],
-  providers: [NFC, Ndef],
+  providers: [NFC, Ndef, { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
