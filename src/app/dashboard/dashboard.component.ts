@@ -26,26 +26,26 @@ export class DashboardComponent implements OnInit {
   public addNewTime() {
 
     if (this.isClockIn()) {
-      this.fillstyle = 'major-fill-red';
+      this.fillstyle = 'major-fill  spin';
+      const latest = Object.assign({}, this.appservice.latestBookingTime);
+      latest.clockOut = this.dateFormatPipe.transform(new Date(), 'HH:mm');
+      this.appservice.updateBookingTime(latest);
 
       setTimeout(() => {
         this.fillstyle = '';
-        const latest = Object.assign({}, this.appservice.latestBookingTime);
-        latest.clockOut = this.dateFormatPipe.transform(new Date(), 'HH:mm');
-        this.appservice.updateBookingTime(latest);
       }, 500);
       return;
     }
 
-    this.fillstyle = 'major-fill';
+    this.fillstyle = 'major-fill-red spin';
+    const bookingTime = new BookingTime();
+    bookingTime.bookingkeyId = this.appservice.selectedBookingKey.bookingKeyId;
+    bookingTime.clockIn = this.dateFormatPipe.transform(new Date(), 'HH:mm');
+    this.appservice.addBookingTime(bookingTime);
 
     setTimeout(() => {
       this.fillstyle = '';
-      const bookingTime = new BookingTime();
-      bookingTime.bookingkeyId = this.appservice.selectedBookingKey.bookingKeyId;
-      bookingTime.clockIn = this.dateFormatPipe.transform(new Date(), 'HH:mm');
 
-      this.appservice.addBookingTime(bookingTime);
     }, 500);
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, NgZone } from '@angular/core';
 import { AppService } from '../services/app.service';
 import { UserDetail } from '../models/userDetail';
 import { User } from '../models/user';
@@ -17,15 +17,18 @@ export class ProfileComponent implements OnInit {
   public isDark: boolean;
 
   constructor(
+    private ngZone: NgZone,
     private apiService: ApiService,
     public appservice: AppService) {
   }
 
   async ngOnInit() {
     try {
-      this.user = JSON.parse(JSON.stringify(this.appservice.getUser()));
-      await this.fetchUserDetails(this.user);
-      this.isDark = localStorage.getItem('isDark') === '1';
+      this.ngZone.run(async () => {
+        this.user = JSON.parse(JSON.stringify(this.appservice.getUser()));
+        await this.fetchUserDetails(this.user);
+        this.isDark = localStorage.getItem('isDark') === '1';
+      });
     } catch (e) {
       console.log(e);
     }
@@ -38,8 +41,11 @@ export class ProfileComponent implements OnInit {
 
     let currUserDetails = user.userDetails;
 
+
     if (this.appservice.isOnline) {
-      await this.apiService.getUserDetailsByUserId(user).toPromise();
+      if (currUserDetails == null) {
+        currUserDetails = await this.apiService.getUserDetailsByUserId(user).toPromise();
+      }
       currUserDetails = currUserDetails.map(o => new UserDetailRelation(o));
     }
 
