@@ -18,9 +18,6 @@ export class LoginComponent implements AfterContentInit {
   public username = '';
   public password = '';
 
-  public isNFCEnabled: boolean;
-  public isListeningNFC: boolean;
-
   constructor(
     private nfc: NFC,
     private router: Router,
@@ -44,13 +41,12 @@ export class LoginComponent implements AfterContentInit {
 
   public checkNFC(): void {
     this.nfc.enabled().then(() => {
-      this.isNFCEnabled = true;
+      this.listenNFC();
     });
   }
 
   public listenNFC(): void {
     this.ndefListener = this.nfc.addNdefListener(() => {
-      this.isListeningNFC = true;
     }, (err) => {
       console.log('error attaching ndef listener', err);
     }).subscribe((event) => {
@@ -61,7 +57,6 @@ export class LoginComponent implements AfterContentInit {
     });
 
     this.defFormatableListener = this.nfc.addNdefFormatableListener(() => {
-      this.isListeningNFC = true;
     }, (err) => {
       console.log('error attaching ndef listener', err);
     }).subscribe((event) => {

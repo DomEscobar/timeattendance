@@ -42,6 +42,7 @@ export class AppService {
     if (this.isOnline) {
       this.apiService.getAllBookingKeys().subscribe(async keys => {
         this.bookingKeys = keys;
+        this.selectedBookingKey = keys[0];
         this.userDetails = await this.apiService.getAllUserDetails().toPromise();
         await this.initOnline();
       }, error => this.initOffline());
@@ -265,5 +266,9 @@ export class AppService {
 
     win.document.close();
     win.print();
+  }
+
+  public logout(): void {
+    localStorage.clear();
   }
 }

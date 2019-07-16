@@ -4,7 +4,7 @@
     <img src="assets/simpleZeIcon.png" />
   </div>
 
-  <div class="row" *ngIf="!isListeningNFC" style="padding: 10px 20px">
+  <div class="row" style="padding: 10px 20px">
     <div class="col-sm-6" style="margin-bottom: 15px;">
       <label>Vorname</label>
       <input class="form-control" [(ngModel)]="username" />
@@ -20,19 +20,7 @@
     </div>
   </div>
 
-  <ng-container *ngIf="isNFCEnabled">
-    <br>
-    <button class="btn btn-primary" style="font-size: 10px;" *ngIf="!isListeningNFC" (click)="listenNFC()">Login mit NFC</button>
-
-    <ng-container *ngIf="isListeningNFC" style="text-align: center;">
-      <h5>NFC Tag bitte an das Gerät halten</h5>
-      <button class="btn" style="margin: auto;" (click)="isListeningNFC=false">Abbrechen</button>
-    </ng-container>
-
-    <br>
-  </ng-container>
-
-  <div style="text-align: center" *ngIf="!isListeningNFC">
+  <div style="text-align: center">
     <br>
     <button class="btn btn-success" (click)="login()">Anmelden</button>
   </div>

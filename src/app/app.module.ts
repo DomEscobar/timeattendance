@@ -18,7 +18,7 @@ import { TimeInputComponent } from './components/time-input/time-input.component
 import 'moment/locale/de';
 import { SavePanelComponent } from './components/save-panel/save-panel.component';
 import { FeatherModule } from 'angular-feather';
-import { Hexagon, Moon, Sun, Trash } from 'angular-feather/icons';
+import { Hexagon, Moon, Sun, Trash, LogOut } from 'angular-feather/icons';
 import { LoadingComponent } from '../static/loading/loading.component';
 import { LoginComponent } from './login/login.component';
 import { CoreModule } from './core/core.module';
@@ -29,7 +29,8 @@ const icons = {
   Hexagon,
   Moon,
   Sun,
-  Trash
+  Trash,
+  LogOut
 };
 
 @NgModule({

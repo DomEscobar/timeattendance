@@ -1,5 +1,5 @@
 <div class="container-fluid" style="    max-width: 900px; margin-top: 12%;">
-
+  <br>
   <div class="row" *ngIf="user">
     <div class="col-sm-6 col-md-4" style="margin-bottom: 15px;">
       <label>Vorname</label>
@@ -19,9 +19,9 @@
       *ngFor="let detail of user.userDetails">
       <div>
         <label>{{appservice.getNameOfDetail(detail.detailid)}}</label>
-        <input class="form-control"  [(ngModel)]="detail.value" />
+        <input class="form-control" [(ngModel)]="detail.value" />
       </div>
-      <i-feather *ngIf="!appservice.isOnline" class="del-ico" (click)="deleteDetail(detail)"  name="trash"></i-feather>
+      <i-feather *ngIf="!appservice.isOnline" class="del-ico" (click)="deleteDetail(detail)" name="trash"></i-feather>
 
     </div>
 
@@ -36,7 +36,6 @@
   -->
   </div>
 
-  <hr>
   <div class="" style="margin-top: 20px">
 
     <app-save-panel [objectToSave]="[user, user.userDetails]" (onSave)="save()"
