@@ -175,6 +175,11 @@ export class ApiService extends BaseService {
     return this.post('login.php', { username: username, password: password }, false, false).pipe(map((response: any) => {
       return <User>response;
     }));
+  }
 
+  public loginNFC(cardId: string): Observable<User> {
+    return this.post('loginNFC.php', { card: cardId}, false, false).pipe(map((response: any) => {
+      return <User>response;
+    }));
   }
 }

@@ -22,6 +22,8 @@ import { Hexagon, Moon, Sun, Trash } from 'angular-feather/icons';
 import { LoadingComponent } from '../static/loading/loading.component';
 import { LoginComponent } from './login/login.component';
 import { CoreModule } from './core/core.module';
+import { NFC, Ndef } from '@ionic-native/nfc/ngx';
+import { LoadingPanelComponent } from './components/loading-panel/loading-panel.component';
 
 const icons = {
   Hexagon,
@@ -43,7 +45,8 @@ const icons = {
     ModalDirective,
     TimeInputComponent,
     SavePanelComponent,
-    LoginComponent
+    LoginComponent,
+    LoadingPanelComponent
   ],
   imports: [
     CoreModule,
@@ -52,10 +55,9 @@ const icons = {
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    FeatherModule.pick(icons),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    FeatherModule.pick(icons)
   ],
-  providers: [],
+  providers: [NFC, Ndef],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,10 @@
+[
+    {
+        "bookingKeyId" : 1,
+        "name" : "Anwesend"
+    },
+    {
+        "bookingKeyId" : 2,
+        "name" : "Dienstgang"
+    }
+]

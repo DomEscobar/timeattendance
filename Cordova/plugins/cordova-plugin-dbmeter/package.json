@@ -1,0 +1,75 @@
+{
+  "_from": "cordova-plugin-dbmeter",
+  "_id": "cordova-plugin-dbmeter@2.1.0",
+  "_inBundle": false,
+  "_integrity": "sha512-VoE5CtUBI9hum4caO7TXk9dkA07qJKA2LhP05olGwcpzId4UH7yc3kgM2d/VK839ToV4Zaqaf5Kg4wA75Z/QJA==",
+  "_location": "/cordova-plugin-dbmeter",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-dbmeter",
+    "name": "cordova-plugin-dbmeter",
+    "escapedName": "cordova-plugin-dbmeter",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-dbmeter/-/cordova-plugin-dbmeter-2.1.0.tgz",
+  "_shasum": "464c454ad42a4db77de98b271728358a80886a00",
+  "_spec": "cordova-plugin-dbmeter",
+  "_where": "C:\\Users\\nokol\\Desktop\\angularCordova\\Cordova",
+  "author": {
+    "name": "Alexis Kofman"
+  },
+  "bugs": {
+    "url": "https://github.com/akofman/cordova-plugin-dbmeter/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-dbmeter",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "deprecated": false,
+  "description": "Cordova DBMeter plugin",
+  "devDependencies": {
+    "cordova": "^8.0.0",
+    "cordova-paramedic": "^0.5.0",
+    "eslint": "^2.2.0",
+    "ios-sim": "^5.0.6"
+  },
+  "homepage": "https://github.com/akofman/cordova-plugin-dbmeter",
+  "keywords": [
+    "cordova",
+    "ios",
+    "android",
+    "dbmeter",
+    "audio",
+    "volume",
+    "sound",
+    "decibel",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android",
+    "cordova:plugin"
+  ],
+  "license": "Apache-2.0",
+  "name": "cordova-plugin-dbmeter",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akofman/cordova-plugin-dbmeter.git"
+  },
+  "scripts": {
+    "test": "eslint dbmeter.js tests",
+    "test-android": "cordova-paramedic --platform android --plugin ./ --verbose",
+    "test-ios": "cordova-paramedic --platform ios --plugin ./ -verbose"
+  },
+  "version": "2.1.0"
+}

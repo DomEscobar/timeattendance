@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "cordova": "ng build --output-path ./Cordova/www --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -21,6 +22,8 @@
     "@angular/pwa": "^0.800.0",
     "@angular/router": "~7.1.0",
     "@angular/service-worker": "~7.1.0",
+    "@ionic-native/core": "^5.10.0",
+    "@ionic-native/nfc": "^5.10.0",
     "@types/jquery": "^3.3.4",
     "air-datepicker": "^2.2.3",
     "angular-feather": "^6.0.2",

@@ -1,0 +1,77 @@
+html {
+  background: rgb(3, 20, 32);
+}
+
+
+.btn
+{
+    color: white;
+}
+
+body {
+  color: white;
+  text-align: left;
+  background-color: #031420;
+}
+
+.navbar-n {
+  border-bottom: 1px solid #131313 !important;
+  background: #00182a !important;
+}
+.form-control {
+  color: #e9e1e1;
+  background-color: #010d16;
+  border-bottom: 0px !important;
+}
+
+label {
+  color: #afaeae;
+}
+
+.btn-primary {
+  border-color: #3bbfff;
+  color: #23cef6;
+}
+
+a {
+  color: #3bbfff;
+}
+
+thead {
+  background: transparent;
+  color: #ffffff;
+  margin-top: 10px;
+}
+
+tr {
+  border-bottom: 0px !important;
+}
+
+.option-item{
+    color:black;
+}
+
+input
+{
+    background-color: #010d16;
+    border: 0px !important;
+    color: white !important;
+}
+
+.container-cfg
+{
+    background: #011626 !important;
+}
+
+.selectBox {
+    border: 0px !important;
+    background: #010d16;
+}
+
+.form-control:focus {
+    color: #495057 !important;
+  }
+
+  .preLoader-bg {
+      background: black;
+  }
