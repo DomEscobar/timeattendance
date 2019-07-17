@@ -2,6 +2,7 @@ import { Component, AfterViewInit } from '@angular/core';
 import { AppService } from '../services/app.service';
 import moment from 'moment';
 import { BookingTime } from '../models/bookingTime';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 declare const $: any;
 
 @Component({
@@ -65,9 +66,8 @@ export class BookingTimesComponent implements AfterViewInit {
   }
 
   public downloadPDF() {
-    const ele = document.getElementById('tblBu').outerHTML;
     // tslint:disable-next-line: max-line-length
-    this.appService.downloadPDF(ele, moment(this.from).format('DD.MM.YYYY'), moment(this.to).format('DD.MM.YYYY') , this.appService.getUser(), this.sumactualTime);
+    this.appService.downloadPDF(document.getElementById('tblBu'), moment(this.from).format('DD.MM.YYYY'), moment(this.to).format('DD.MM.YYYY') , this.appService.getUser(), this.sumactualTime);
   }
 
   public updateBookingTime(bookingTime: BookingTime) {

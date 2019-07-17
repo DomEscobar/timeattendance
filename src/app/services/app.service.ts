@@ -9,6 +9,9 @@ declare const toastr: any;
 import * as cfg from '../../assets/server.json';
 import { ApiService } from './api.service';
 import { UserDetail } from '../models/userDetail';
+import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
+import { File, IWriteOptions } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +36,9 @@ export class AppService {
   public isOnline = cfg.url != '';
 
   constructor(
-
+    private file: File,
+    private fileOpener: FileOpener,
+    private exportAsService: ExportAsService,
     private apiService: ApiService,
     private http: HttpClient) {
 
@@ -242,39 +247,66 @@ export class AppService {
   }
 
   public downloadExcel(element: HTMLElement) {
-    let uri = 'data:application/vnd.ms-excel;base64,';
-    let template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>';
-    let base64 = (s) => { return window.btoa(unescape(encodeURIComponent(s))); };
-    const format = (s, c) => { return s.replace(/{(\w+)}/g, (m, p) => { return c[p]; }) };
-    var ctx = { worksheet: 'Worksheet', table: element.innerHTML };
-    window.location.href = uri + base64(format(template, ctx));
+
+    const exportAsConfig: ExportAsConfig = {
+      type: 'xls',
+      elementId: element.id
+    };
+
+    this.exportAsService.get(exportAsConfig).subscribe((base64) => {
+      this.savePDFApp(base64, 'vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Buchungszeiten.xls');
+    });
   }
 
-  public downloadPDF(tableHTML: string, from: string, to: string, user: User, sumactualTime: string) {
-    var style = '<style> @page { margin: 0; }  @media print {      @page { margin: 0; }      body { margin: 1.6cm; }  }  p{font-size:12px;} table{width:100%;} .table-striped tbody tr:nth-of-type(odd) {  background-color: rgba(89, 89, 89, 0.05);} .table td{ text-align:center; border-bottom: 1px solid #eaeaea; } table thead th { text-align:center; vertical-align: bottom; border-bottom: 2px solid #dee2e6;} thead { background: #ffffff; text-align:left;  color: #5c5c5c; }  .table th,    .table td {   padding: 8px 10px; font-size: 11px;  } </style>';
+  public downloadPDF(element: HTMLElement, from: string, to: string, user: User, sumactualTime: string) {
 
-    var win = window.open('', '', 'height=700,width=700');
+    const exportAsConfig: ExportAsConfig = {
+      type: 'pdf',
+      elementId: element.id
+    };
 
-    win.document.write('<html><head>');
-    win.document.write('<title>' + from + ' - ' + to + '_' + user.lastname + '_' + user.lastname + '</title>');
-    win.document.write(style);
-    win.document.write('</head>');
-    win.document.write('<body>');
-    win.document.write('<p style="float:right;"><b> Zeitraum </b> : ' + from + ' - ' + to + ' </p>');
+    this.exportAsService.get(exportAsConfig).subscribe((base64) => {
+      this.savePDFApp(base64, 'pdf', `${from}_${to}_buchungszeiten.pdf`);
+    }, error => {
+      console.log(error);
+    });
+  }
 
+  private savePDFApp(base64Data: string, mime: string, dataname: string): void {
 
-    win.document.write('<p> <b>Name, Vorname </b>: ' + user.lastname + ', ' + user.firstname + ' </p>');
+    let contentType = this.convertBaseb64ToBlob(base64Data, `data:application/${mime};base64`);
 
-    for (let detail of user.userDetails) {
-      win.document.write('<p><b> ' + this.getNameOfDetail(detail.detailid) + ' </b> : ' + detail.value + ' </p>');
+    const directory = this.file.dataDirectory;
+    let options: IWriteOptions = { replace: true };
+
+    this.file.writeFile(directory, dataname, contentType, options)
+      .then((success) => {
+        this.fileOpener.open(this.file.dataDirectory + dataname, `application/${mime}`)
+          .then(() => console.log('File is opened'))
+          .catch(e => console.log('Error opening file', e));
+
+      }).catch(function (error) {
+        console.error('oops, something went wrong!', error);
+      });
+  }
+
+  convertBaseb64ToBlob(b64Data, contentType): Blob {
+    contentType = contentType || '';
+    const sliceSize = 512;
+    b64Data = b64Data.replace(/^[^,]+,/, '');
+    b64Data = b64Data.replace(/\s/g, '');
+    const byteCharacters = window.atob(b64Data);
+    const byteArrays = [];
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
     }
-
-    win.document.write(tableHTML);
-    win.document.write('    <div style="padding: 5px; font-size: 14px; border-top: 1px solid black;"> Gesammte Arbeitszeit :' + sumactualTime + '</div>');
-    win.document.write('</body></html>');
-
-    win.document.close();
-    win.print();
+    return new Blob(byteArrays, { type: contentType });
   }
 
   public logout(): void {

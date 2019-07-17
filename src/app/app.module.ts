@@ -25,6 +25,9 @@ import { CoreModule } from './core/core.module';
 import { NFC, Ndef } from '@ionic-native/nfc/ngx';
 import { LoadingPanelComponent } from './components/loading-panel/loading-panel.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { ExportAsModule } from 'ngx-export-as';
+import { File, IWriteOptions } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 const icons = {
   Hexagon,
@@ -51,6 +54,7 @@ const icons = {
     LoadingPanelComponent
   ],
   imports: [
+    ExportAsModule,
     CoreModule,
     BrowserModule,
     MomentModule,
@@ -59,7 +63,7 @@ const icons = {
     FormsModule,
     FeatherModule.pick(icons)
   ],
-  providers: [NFC, Ndef, { provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [NFC, Ndef, File,FileOpener, { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

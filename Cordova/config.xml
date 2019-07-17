@@ -96,6 +96,10 @@
     <vs:toolsetVersion>6.3.1</vs:toolsetVersion>
     <plugin name="cordova-plugin-dbmeter" spec="^2.1.0" />
     <plugin name="phonegap-nfc" spec="^1.0.3" />
+    <plugin name="cordova-plugin-file" spec="^6.0.2" />
+    <plugin name="cordova-plugin-file-opener2" spec="^2.2.1">
+        <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
+    </plugin>
     <engine name="android" spec="^7.0.0" />
     <engine name="ios" spec="4.2.0" />
     <engine name="windows" spec="4.4.2" />
