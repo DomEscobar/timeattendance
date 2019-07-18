@@ -9,9 +9,6 @@ declare const toastr: any;
 import * as cfg from '../../assets/server.json';
 import { ApiService } from './api.service';
 import { UserDetail } from '../models/userDetail';
-import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
-import { File, IWriteOptions } from '@ionic-native/file/ngx';
-import { FileOpener } from '@ionic-native/file-opener/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -36,9 +33,6 @@ export class AppService {
   public isOnline = cfg.url != '';
 
   constructor(
-    private file: File,
-    private fileOpener: FileOpener,
-    private exportAsService: ExportAsService,
     private apiService: ApiService,
     private http: HttpClient) {
 
@@ -246,69 +240,7 @@ export class AppService {
     return this.getUser().firstname !== '' && this.getUser().lastname !== '';
   }
 
-  public downloadExcel(element: HTMLElement) {
-
-    const exportAsConfig: ExportAsConfig = {
-      type: 'xls',
-      elementId: element.id
-    };
-
-    this.exportAsService.get(exportAsConfig).subscribe((base64) => {
-      this.savePDFApp(base64, 'vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Buchungszeiten.xls');
-    });
-  }
-
-  public downloadPDF(element: HTMLElement, from: string, to: string, user: User, sumactualTime: string) {
-
-    const exportAsConfig: ExportAsConfig = {
-      type: 'pdf',
-      elementId: element.id
-    };
-
-    this.exportAsService.get(exportAsConfig).subscribe((base64) => {
-      this.savePDFApp(base64, 'pdf', `${from}_${to}_buchungszeiten.pdf`);
-    }, error => {
-      console.log(error);
-    });
-  }
-
-  private savePDFApp(base64Data: string, mime: string, dataname: string): void {
-
-    let contentType = this.convertBaseb64ToBlob(base64Data, `data:application/${mime};base64`);
-
-    const directory = this.file.dataDirectory;
-    let options: IWriteOptions = { replace: true };
-
-    this.file.writeFile(directory, dataname, contentType, options)
-      .then((success) => {
-        this.fileOpener.open(this.file.dataDirectory + dataname, `application/${mime}`)
-          .then(() => console.log('File is opened'))
-          .catch(e => console.log('Error opening file', e));
-
-      }).catch(function (error) {
-        console.error('oops, something went wrong!', error);
-      });
-  }
-
-  convertBaseb64ToBlob(b64Data, contentType): Blob {
-    contentType = contentType || '';
-    const sliceSize = 512;
-    b64Data = b64Data.replace(/^[^,]+,/, '');
-    b64Data = b64Data.replace(/\s/g, '');
-    const byteCharacters = window.atob(b64Data);
-    const byteArrays = [];
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
-    }
-    return new Blob(byteArrays, { type: contentType });
-  }
-
+ 
   public logout(): void {
     localStorage.clear();
     this.setUser(null);

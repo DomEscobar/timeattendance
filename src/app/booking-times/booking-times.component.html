@@ -17,9 +17,12 @@
 
 
   <div *ngIf="appService.hasCreditals()" style="float: right;">
-    <div class="export-select" (click)="downloadPDF()">
-      <span>PDF</span></div>
-    <div class="export-select" (click)="downloadExcel()"><span>EXCEL</span></div>
+    <div class="export-select" (click)="export()">
+      <i-feather name="download" style="    width: 19px;
+      margin-right: 10px;
+      vertical-align: middle;"></i-feather>
+      <span>Exportieren</span>
+    </div>
   </div>
 
   <div style="margin: 5px;font-size: 13px;float: right;" *ngIf="!appService.hasCreditals()">
@@ -28,9 +31,6 @@
     </a>
   </div>
 
-
-  <button (click)="addBooking()" class="btn btn-primary new-booking">+
-    Stempelung</button>
 
   <!-- Current status -->
   <div class="paper">
@@ -54,13 +54,16 @@
 
           </tr>
 
-
         </tbody>
 
       </table>
     </div>
 
-    <div style="padding: 5px; font-size: 14px;">
+
+    <button (click)="addBooking()" class="btn btn-primary new-booking">+
+      Stempelung</button>
+
+    <div style="padding: 5px; font-size: 14px; float:right;">
       <span>Gesammte Arbeitszeit : {{sumactualTime}}
       </span>
     </div>
@@ -72,4 +75,9 @@
 <div class="pop-dialog" *ngIf="selectedBooking">
   <app-booking-time-detail [bookingTime]="selectedBooking" (onCancel)="selectedBooking=null"
     (onDelete)="deleteBookingTime(selectedBooking)" (onSave)="updateBookingTime($event)"></app-booking-time-detail>
+</div>
+
+
+<div class="pop-dialog" *ngIf="isOnPdfView" style="padding: 2%;">
+  <acc-pdf-view (downloadFinished)="isOnPdfView=false"></acc-pdf-view>
 </div>

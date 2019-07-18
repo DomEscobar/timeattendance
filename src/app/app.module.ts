@@ -18,7 +18,7 @@ import { TimeInputComponent } from './components/time-input/time-input.component
 import 'moment/locale/de';
 import { SavePanelComponent } from './components/save-panel/save-panel.component';
 import { FeatherModule } from 'angular-feather';
-import { Hexagon, Moon, Sun, Trash, LogOut } from 'angular-feather/icons';
+import { Hexagon, Moon, Sun, Trash, LogOut, Download } from 'angular-feather/icons';
 import { LoadingComponent } from '../static/loading/loading.component';
 import { LoginComponent } from './login/login.component';
 import { CoreModule } from './core/core.module';
@@ -28,13 +28,16 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ExportAsModule } from 'ngx-export-as';
 import { File, IWriteOptions } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { PdfViewComponent } from './components/pdf-view/pdf-view.component';
+import { FileExportService } from './services/file-export.service';
 
 const icons = {
   Hexagon,
   Moon,
   Sun,
   Trash,
-  LogOut
+  LogOut,
+  Download
 };
 
 @NgModule({
@@ -51,7 +54,8 @@ const icons = {
     TimeInputComponent,
     SavePanelComponent,
     LoginComponent,
-    LoadingPanelComponent
+    LoadingPanelComponent,
+    PdfViewComponent
   ],
   imports: [
     ExportAsModule,
@@ -63,7 +67,7 @@ const icons = {
     FormsModule,
     FeatherModule.pick(icons)
   ],
-  providers: [NFC, Ndef, File,FileOpener, { provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [FileExportService, NFC, Ndef, File, FileOpener, { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

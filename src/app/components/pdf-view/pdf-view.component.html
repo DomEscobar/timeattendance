@@ -1,0 +1,72 @@
+<!--
+1. Create header mit details
+2. Seitenumbruch nach x elemente
+3. neue seite name und vorname  am header
+4. gesammt am ende
+-->
+<div class="print-action-panel">
+
+  <button class="btn btn-flat" style="float:right;" (click)="cancel()">Abbrechen</button>
+  <button class="btn btn-primary" (click)="pdf()">PDF</button>
+  <button class="btn btn-primary" style="margin-right: 20px" (click)="excel()">Excel</button>
+
+</div>
+<br>
+<br>
+<div id="printView">
+
+  <div class="container-fluid" *ngFor="let page of bookingPages; let i = index">
+    <div *ngIf="i==0" class="detail-header">
+      <div class="detail-panel">
+        <div class="rowl">
+          <div>Vorname </div> {{fileExportService.user?.firstname}}
+        </div>
+        <div class="rowl">
+          <div>Nachname</div> {{fileExportService.user?.lastname}}
+        </div>
+      </div>
+
+      <div class="date-range-panel">
+        <div class="rowl">
+          <div> Zeitraum </div> {{fileExportService.from}} - {{fileExportService.to}}
+        </div>
+      </div>
+
+    </div>
+
+
+
+    <div class="booking-times-panel">
+
+      <table class="table table-striped table-sm">
+        <thead>
+          <th>Datum</th>
+          <th>Von</th>
+          <th>Bis</th>
+          <th>Arbeitszeit</th>
+          <th>Grund</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bookingTime of page.bookingTimes">
+
+            <td>{{bookingTime.date}}</td>
+            <td>{{bookingTime.clockIn}}</td>
+            <td>{{bookingTime.clockOut}}</td>
+            <td>{{bookingTime.actualTime}}</td>
+            <td>{{appService.getReason(bookingTime.bookingkeyId)}}</td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+
+      <div style="float:right;font-size: 11px;">
+        Seite {{i+1}}
+      </div>
+    </div>
+
+  </div>
+
+</div>

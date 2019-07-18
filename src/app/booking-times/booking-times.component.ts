@@ -1,8 +1,10 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { AppService } from '../services/app.service';
 import moment from 'moment';
 import { BookingTime } from '../models/bookingTime';
 import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
+import { PdfViewComponent } from '../components/pdf-view/pdf-view.component';
+import { FileExportService } from '../services/file-export.service';
 declare const $: any;
 
 @Component({
@@ -18,7 +20,12 @@ export class BookingTimesComponent implements AfterViewInit {
   public selectedBooking: BookingTime;
   public sumactualTime: string;
 
+  public isOnPdfView: boolean;
+
+  @ViewChild(PdfViewComponent) pdfViewComponent: PdfViewComponent;
+
   constructor(
+    public fileExportService: FileExportService,
     public appService: AppService) { }
 
   ngAfterViewInit() {
@@ -60,14 +67,17 @@ export class BookingTimesComponent implements AfterViewInit {
     this.calcActualtime();
   }
 
-  public downloadExcel() {
-    const ele = document.getElementById('tblBu');
-    this.appService.downloadExcel(ele);
+  public export() {
+    this.setData();
+    this.isOnPdfView = true;
   }
 
-  public downloadPDF() {
-    // tslint:disable-next-line: max-line-length
-    this.appService.downloadPDF(document.getElementById('tblBu'), moment(this.from).format('DD.MM.YYYY'), moment(this.to).format('DD.MM.YYYY') , this.appService.getUser(), this.sumactualTime);
+  private setData(): void {
+    const from = moment(this.from).format('DD.MM.YYYY');
+    const to = moment(this.to).format('DD.MM.YYYY');
+    const user = this.appService.getUser();
+
+    this.fileExportService.setData(user, from, to, this.bookingTimes, this.calcActualtime);
   }
 
   public updateBookingTime(bookingTime: BookingTime) {
