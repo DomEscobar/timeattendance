@@ -128,8 +128,13 @@ export class ProfileComponent implements OnInit
       return;
     }
 
-    localStorage.setItem('APIURL', url);
-
-    this.router.navigate(['login']);
+    if (confirm('Änderungen und Stempelungen gehen dabei verloren, sind Sie sich sicher?'))
+    {
+      localStorage.setItem('APIURL', url);
+      this.appservice.isOnline = true;
+      AppService.apiUrl = url;
+      this.appservice.logout();
+      this.router.navigate(['login']);
+    }
   }
 }

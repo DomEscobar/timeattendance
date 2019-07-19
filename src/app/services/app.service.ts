@@ -307,13 +307,12 @@ export class AppService
     return this.getUser().firstname !== '' && this.getUser().lastname !== '';
   }
 
-
   public logout(): void
   {
     localStorage.removeItem(this.TIMES);
     localStorage.removeItem(this.LATEST);
     localStorage.removeItem(AppService.USER);
-    this.setUser(null);
+    this.userSub.next(null);
     this.bookingTimes = [];
     this.latestBookingTime = null;
     this.userDetails = [];
