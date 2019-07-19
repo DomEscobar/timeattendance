@@ -9,6 +9,7 @@ declare const toastr: any;
 import { ApiService } from './api.service';
 import { UserDetail } from '../models/userDetail';
 import { File } from '@ionic-native/file/ngx';
+import { resolve } from 'url';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,9 @@ export class AppService
 {
 
   public static readonly USER = 'zt-u';
-  private readonly TIMES = 'zt-bt';
-  private readonly LATEST = 'zt-iw';
+  public readonly USERDETAILS = 'zt-ud';
+  public readonly TIMES = 'zt-bt';
+  public readonly LATEST = 'zt-iw';
 
   private userSub: BehaviorSubject<User> = new BehaviorSubject(null);
   public user$: Observable<User> = this.userSub.asObservable();
@@ -36,7 +38,6 @@ export class AppService
   public static apiUrl: string;
 
   constructor(
-    private file: File,
     private apiService: ApiService,
     private http: HttpClient)
   {
@@ -59,7 +60,7 @@ export class AppService
       return;
     }
 
-    this.initOffline();
+    await this.initOffline();
   }
 
   public async initOnline(): Promise<void>
@@ -71,15 +72,38 @@ export class AppService
     }
   }
 
-  private initOffline(): void
+  private initOffline(): Promise<void>
   {
-    this.http.get<BookingKey[]>('assets/bookingKeys.json').subscribe(data =>
+    return new Promise((resolve, reject) =>
     {
-      this.bookingKeys = data;
-      this.selectedBookingKey = data[0];
-      this.initBookingTimes();
-      this.latestBookingTime = JSON.parse(localStorage.getItem(this.LATEST));
+      this.http.get<BookingKey[]>('assets/bookingKeys.json').subscribe(data =>
+      {
+        this.bookingKeys = data;
+        this.selectedBookingKey = data[0];
+        this.initBookingTimes();
+        this.latestBookingTime = JSON.parse(localStorage.getItem(this.LATEST));
+
+        this.userDetails = JSON.parse(localStorage.getItem(this.USERDETAILS));
+        if (this.userDetails == null)
+        {
+          this.userDetails = new Array();
+        }
+
+        resolve();
+      });
     });
+  }
+
+  public addUserDetail(newDetail: UserDetail): void
+  {
+    this.userDetails.push(newDetail);
+    localStorage.setItem(this.USERDETAILS, JSON.stringify(this.userDetails));
+  }
+
+  public removeUserDetail(detailId: number): void
+  {
+    this.userDetails = this.userDetails.filter(o => o.detailid != detailId);
+    localStorage.setItem(this.USERDETAILS, JSON.stringify(this.userDetails));
   }
 
   private initUser(): void
@@ -96,11 +120,6 @@ export class AppService
     }
 
     const user = new User(JSON.parse(window.atob(userEncrypt)));
-
-    if (user.cst == null)
-    {
-      return;
-    }
 
     this.userSub.next(user);
   }
@@ -291,7 +310,9 @@ export class AppService
 
   public logout(): void
   {
-    localStorage.clear();
+    localStorage.removeItem(this.TIMES);
+    localStorage.removeItem(this.LATEST);
+    localStorage.removeItem(AppService.USER);
     this.setUser(null);
     this.bookingTimes = [];
     this.latestBookingTime = null;

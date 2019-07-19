@@ -36,7 +36,7 @@
   -->
   </div>
 
-  <div class="" style="margin-top: 20px">
+  <div class="" style="margin-top: 20px" *ngIf="user">
 
     <app-save-panel [objectToSave]="[user, user.userDetails]" (onSave)="save()"
       (onCancel)="user=$event[0]; user.userDetails = $event[1];">

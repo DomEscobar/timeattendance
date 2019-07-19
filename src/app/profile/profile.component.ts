@@ -6,6 +6,7 @@ import { UserDetailRelation } from '../models/userDetailRelation';
 import { ApiService } from '../services/api.service';
 declare const toastr: any;
 import { File, IWriteOptions } from '@ionic-native/file/ngx';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +20,7 @@ export class ProfileComponent implements OnInit
   public isDark: boolean;
 
   constructor(
-    private file: File,
+    private router: Router,
     private ngZone: NgZone,
     private apiService: ApiService,
     public appservice: AppService)
@@ -44,11 +45,12 @@ export class ProfileComponent implements OnInit
 
   private async fetchUserDetails(user: User): Promise<void>
   {
-    const userDetails = await this.apiService.getAllUserDetails().toPromise();
-    let currUserDetails = user.userDetails;
+    let currUserDetails = this.user.userDetails;
+    let userDetails = this.appservice.userDetails;
 
     if (this.appservice.isOnline)
     {
+      userDetails = await this.apiService.getAllUserDetails().toPromise();
       if (currUserDetails == null)
       {
         currUserDetails = await this.apiService.getUserDetailsByUserId(user).toPromise();
@@ -57,17 +59,23 @@ export class ProfileComponent implements OnInit
     }
 
     const details = [];
+
+    if (userDetails == null)
+    {
+      return;
+    }
+
     // fill details if not exists at user details
     userDetails.forEach(detail =>
     {
-      if (currUserDetails.find(o => Number(o.detailid) == Number(detail.detailid)) != null)
+      if (currUserDetails.find(o => o.detailid == detail.detailid) != null)
       {
-        details.push(currUserDetails.find(o => Number(o.detailid) == Number(detail.detailid)));
+        details.push(currUserDetails.find(o => o.detailid == detail.detailid));
       } else
       {
         const newDetail = new UserDetailRelation();
-        newDetail.detailid = Number(detail.detailid);
-        newDetail.userid = Number(user.userid);
+        newDetail.detailid = detail.detailid;
+        newDetail.userid = user.userid;
         details.push(newDetail);
       }
     });
@@ -93,13 +101,15 @@ export class ProfileComponent implements OnInit
     const newDetail = new UserDetail();
     newDetail.name = name;
 
-    this.appservice.userDetails.push(newDetail);
+    this.appservice.addUserDetail(newDetail);
+    this.fetchUserDetails(this.user);
   }
 
   //only Offline
   public deleteDetail(detail: UserDetailRelation): void
   {
-    this.appservice.userDetails = this.user.userDetails.filter(o => o.userid !== detail.userid);
+    this.appservice.removeUserDetail(detail.detailid);
+    this.fetchUserDetails(this.user);
   }
 
   public setDark(isDark: boolean)
@@ -118,16 +128,8 @@ export class ProfileComponent implements OnInit
       return;
     }
 
-    const directory = this.file.dataDirectory;
-    const options: IWriteOptions = { replace: true };
+    localStorage.setItem('APIURL', url);
 
-    this.file.writeFile(directory, 'server.json', '{  cfg : ' + url + ' }', options)
-      .then((success) =>
-      {
-        toastr.info('Es wird versucht sich zu verbinden...');
-      }).catch(function (error)
-      {
-        console.error('oops, something went wrong!', error);
-      });
+    this.router.navigate(['login']);
   }
 }

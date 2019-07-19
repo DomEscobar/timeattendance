@@ -1,11 +1,11 @@
-<div class="navbar-n" *ngIf="appService.isAuthenticated()">
+<div class="navbar-n" *ngIf="appService.isAuthenticated()||!appService.isOnline">
     <a style="margin-left: -10px;" [routerLink]="['/stomp']" routerLinkActive="router-link-active">
         <img src="assets/simpleZeIcon.png" style="width: 25px" />
     </a>
     <a [routerLink]="['/profile']">Persönliches</a>
     <a [routerLink]="['/bookingTimes']" routerLinkActive="router-link-active">Stempelungen</a>
 
-    <div class="" style="float: right;color: rgba(255, 0, 0, 0.37);;" (click)="signOut()">
+    <div *ngIf="appService.isOnline" class="" style="float: right;color: rgba(255, 0, 0, 0.37);;" (click)="signOut()">
         <i-feather name="log-out"></i-feather>
         <span style="margin-left: 15px;" class="hide-mobile">Abmelden</span>
     </div>

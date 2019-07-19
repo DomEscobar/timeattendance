@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { AppService } from '../../services/app.service';
-import { HttpClient } from '@angular/common/http';
-import { File } from '@ionic-native/file/ngx';
 import * as cfg from '../../../assets/server.json';
 
 @Injectable()
 export class AuthenticationGuard implements CanActivate
 {
   constructor(
-    private file: File,
-    private http: HttpClient,
     private router: Router,
     private appService: AppService) { }
 
@@ -20,12 +16,11 @@ export class AuthenticationGuard implements CanActivate
 
     if (this.appService.isApp)
     {
-      const opt = await this.http.get<any>(this.file.dataDirectory + '/server.json').toPromise();
-
       // --- Online app
-      if (opt != null)
+      AppService.apiUrl = localStorage.getItem('APIURL');
+
+      if (AppService.apiUrl != null && AppService.apiUrl !== '')
       {
-        AppService.apiUrl = opt.cfg;
         this.appService.isOnline = true;
         await this.appService.prepareApp();
 
@@ -33,9 +28,10 @@ export class AuthenticationGuard implements CanActivate
       }
 
       // offline app
+      await this.appService.prepareApp();
       return true;
-    }       
-    
+    }
+
     /**
      * ---- Check as web app
      */

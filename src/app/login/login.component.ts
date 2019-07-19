@@ -10,7 +10,8 @@ import { NFC } from '@ionic-native/nfc/ngx';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.less']
 })
-export class LoginComponent implements AfterContentInit {
+export class LoginComponent implements AfterContentInit
+{
 
   public ndefListener;
   public defFormatableListener;
@@ -24,52 +25,69 @@ export class LoginComponent implements AfterContentInit {
     private nfc: NFC,
     private router: Router,
     private appservice: AppService,
-    private apiService: ApiService) {
-    document.addEventListener('deviceready', () => {
+    private apiService: ApiService)
+  {
+    document.addEventListener('deviceready', () =>
+    {
       this.checkNFC();
     });
   }
 
-  ngAfterContentInit() {
+  ngAfterContentInit()
+  {
   }
 
-  public login(): void {
-    this.apiService.login(this.username, this.password).subscribe(data => {
+  public login(): void
+  {
+    this.apiService.login(this.username, this.password).subscribe(data =>
+    {
       this.appservice.setUser(data);
       this.appservice.initOnline();
       this.router.navigate(['']);
     }, error => Popup.error('Fehlerhafte Anmeldedaten'));
   }
 
-  public checkNFC(): void {
-    this.nfc.enabled().then(() => {
+  public checkNFC(): void
+  {
+    this.nfc.enabled().then(() =>
+    {
       this.listenNFC();
     });
   }
 
-  public listenNFC(): void {
-    this.ndefListener = this.nfc.addNdefListener(() => {
-    }, (err) => {
+  public listenNFC(): void
+  {
+    this.ndefListener = this.nfc.addNdefListener(() =>
+    {
+    }, (err) =>
+    {
       console.log('error attaching ndef listener', err);
-    }).subscribe((event) => {
+    }).subscribe((event) =>
+    {
 
       this.password = this.nfc.bytesToHexString(event.tag.id);
       this.loginNFC();
     });
 
-    this.defFormatableListener = this.nfc.addNdefFormatableListener(() => {
-    }, (err) => {
+    this.defFormatableListener = this.nfc.addNdefFormatableListener(() =>
+    {
+    }, (err) =>
+    {
       console.log('error attaching ndef listener', err);
-    }).subscribe((event) => {
+    }).subscribe((event) =>
+    {
 
       this.password = this.nfc.bytesToHexString(event.tag.id);
       this.loginNFC();
     });
   }
 
-  private loginNFC(): void {
-    this.apiService.loginNFC(this.password).subscribe(data => {
-      this.zone.run(() => {
+  private loginNFC(): void
+  {
+    this.apiService.loginNFC(this.password).subscribe(data =>
+    {
+      this.zone.run(() =>
+      {
 
         this.appservice.setUser(data);
         this.appservice.initOnline();
@@ -80,9 +98,15 @@ export class LoginComponent implements AfterContentInit {
     }, error => Popup.error('ID nicht vorhanden'));
   }
 
-  private disableListeners(): void {
+  private disableListeners(): void
+  {
     this.ndefListener.unsubscribe();
     this.defFormatableListener.unsubscribe();
   }
 
+  public turnOffline(): void
+  {
+    localStorage.removeItem('APIURL');
+    this.router.navigate(['']);
+  }
 }
