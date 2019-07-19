@@ -3,13 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 declare var unescape: any;
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import server from '../../assets/server.json';
 import { Loading } from '../../static/loading/Loading';
 import { Popup } from '../../static/popup/Popup';
+import { AppService } from './app.service';
 
 export class BaseService {
     protected http: HttpClient;
-    protected apiUrl = server.url;
 
     constructor(private injector: Injector) {
         this.http = this.injector.get(HttpClient);
@@ -24,7 +23,7 @@ export class BaseService {
         if (isShowLoading) {
             Loading.show();
         }
-        const observer = this.http.get<Response>(this.apiUrl + path + '?' + param, {
+        const observer = this.http.get<Response>(AppService.apiUrl + path + '?' + param, {
         }).pipe(
             tap(
                 data => {
@@ -52,7 +51,7 @@ export class BaseService {
         if (isShowLoading) {
             Loading.show();
         }
-        const observer = this.http.post<Response>(this.apiUrl + path, creds, {
+        const observer = this.http.post<Response>(AppService.apiUrl + path, creds, {
         }).pipe(
             tap(
                 data => {
@@ -78,7 +77,7 @@ export class BaseService {
    */
     public put(path: string, param: any, creds: any): Observable<Response> {
         Loading.show();
-        const observer = this.http.put<Response>(this.apiUrl + path + param, JSON.stringify(creds), {
+        const observer = this.http.put<Response>(AppService.apiUrl + path + param, JSON.stringify(creds), {
         }).pipe(
             tap(
                 data => Popup.success(),
@@ -91,7 +90,7 @@ export class BaseService {
 
     delete(path: string, id: any = ''): Observable<any> {
         Loading.show();
-        const observer = this.http.delete(this.apiUrl + path + '?id=' + id, {
+        const observer = this.http.delete(AppService.apiUrl + path + '?id=' + id, {
         }).pipe(
             tap(
                 data => Popup.success(),

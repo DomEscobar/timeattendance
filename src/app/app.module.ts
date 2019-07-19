@@ -7,8 +7,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MomentModule } from 'ngx-moment';
 import { HttpClientModule } from '@angular/common/http';
 import { SelectComponent } from './components/select/select.component';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
 import { BookingTimesComponent } from './booking-times/booking-times.component';
 import { DatepickerComponent } from './components/datepicker/datepicker.component';
 import { ProfileComponent } from './profile/profile.component';
@@ -18,7 +16,7 @@ import { TimeInputComponent } from './components/time-input/time-input.component
 import 'moment/locale/de';
 import { SavePanelComponent } from './components/save-panel/save-panel.component';
 import { FeatherModule } from 'angular-feather';
-import { Hexagon, Moon, Sun, Trash, LogOut, Download } from 'angular-feather/icons';
+import { Hexagon, Moon, Sun, Trash, LogOut, Download, CloudOff, Cloud } from 'angular-feather/icons';
 import { LoadingComponent } from '../static/loading/loading.component';
 import { LoginComponent } from './login/login.component';
 import { CoreModule } from './core/core.module';
@@ -37,7 +35,9 @@ const icons = {
   Sun,
   Trash,
   LogOut,
-  Download
+  Download,
+  CloudOff,
+  Cloud
 };
 
 @NgModule({

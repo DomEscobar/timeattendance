@@ -2,10 +2,8 @@ html {
   background: rgb(3, 20, 32);
 }
 
-
-.btn
-{
-    color: white;
+.btn {
+  color: white;
 }
 
 body {
@@ -47,31 +45,33 @@ tr {
   border-bottom: 0px !important;
 }
 
-.option-item{
-    color:black;
+.option-item {
+  color: black;
 }
 
-input
-{
-    background-color: #010d16;
-    border: 0px !important;
-    color: white !important;
+input {
+  background-color: #010d16;
+  border: 0px !important;
+  color: white !important;
 }
 
-.container-cfg
-{
-    background: #011626 !important;
+.container-cfg {
+  background: #011626 !important;
 }
 
 .selectBox {
-    border: 0px !important;
-    background: #010d16;
+  border: 0px !important;
+  background: #010d16;
 }
 
 .form-control:focus {
-    color: #495057 !important;
-  }
+  color: #495057 !important;
+}
 
-  .preLoader-bg {
-      background: black;
-  }
+.preLoader-bg {
+  background: black;
+}
+
+.btn-success {
+  color: #3cc84e;
+}

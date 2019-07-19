@@ -5,45 +5,52 @@ import { User } from '../models/user';
 import { UserDetailRelation } from '../models/userDetailRelation';
 import { ApiService } from '../services/api.service';
 declare const toastr: any;
+import { File, IWriteOptions } from '@ionic-native/file/ngx';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.less']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit
+{
 
   public user: User;
   public isDark: boolean;
 
   constructor(
+    private file: File,
     private ngZone: NgZone,
     private apiService: ApiService,
-    public appservice: AppService) {
+    public appservice: AppService)
+  {
   }
 
-  async ngOnInit() {
-    try {
-      this.ngZone.run(async () => {
+  async ngOnInit()
+  {
+    try
+    {
+      this.ngZone.run(async () =>
+      {
         this.user = JSON.parse(JSON.stringify(this.appservice.getUser()));
         await this.fetchUserDetails(this.user);
         this.isDark = localStorage.getItem('isDark') === '1';
       });
-    } catch (e) {
+    } catch (e)
+    {
       console.log(e);
     }
   }
 
-  private async fetchUserDetails(user: User): Promise<void> {
-
+  private async fetchUserDetails(user: User): Promise<void>
+  {
     const userDetails = await this.apiService.getAllUserDetails().toPromise();
-
-
     let currUserDetails = user.userDetails;
 
-
-    if (this.appservice.isOnline) {
-      if (currUserDetails == null) {
+    if (this.appservice.isOnline)
+    {
+      if (currUserDetails == null)
+      {
         currUserDetails = await this.apiService.getUserDetailsByUserId(user).toPromise();
       }
       currUserDetails = currUserDetails.map(o => new UserDetailRelation(o));
@@ -51,10 +58,13 @@ export class ProfileComponent implements OnInit {
 
     const details = [];
     // fill details if not exists at user details
-    userDetails.forEach(detail => {
-      if (currUserDetails.find(o => Number(o.detailid) == Number(detail.detailid)) != null) {
+    userDetails.forEach(detail =>
+    {
+      if (currUserDetails.find(o => Number(o.detailid) == Number(detail.detailid)) != null)
+      {
         details.push(currUserDetails.find(o => Number(o.detailid) == Number(detail.detailid)));
-      } else {
+      } else
+      {
         const newDetail = new UserDetailRelation();
         newDetail.detailid = Number(detail.detailid);
         newDetail.userid = Number(user.userid);
@@ -66,15 +76,18 @@ export class ProfileComponent implements OnInit {
   }
 
 
-  public save(): void {
+  public save(): void
+  {
     this.appservice.updateUser(this.user);
     toastr.success('Erfolgreich gespeichert', 'Erfolgreich');
   }
 
   // -- Offline
-  public addDetail(): void {
+  public addDetail(): void
+  {
     const name = prompt("Name der zusaätzlichen Details", "Personalnummer");
-    if (name == null) {
+    if (name == null)
+    {
       return;
     }
     const newDetail = new UserDetail();
@@ -84,13 +97,37 @@ export class ProfileComponent implements OnInit {
   }
 
   //only Offline
-  public deleteDetail(detail: UserDetailRelation): void {
+  public deleteDetail(detail: UserDetailRelation): void
+  {
     this.appservice.userDetails = this.user.userDetails.filter(o => o.userid !== detail.userid);
   }
 
-  public setDark(isDark: boolean) {
+  public setDark(isDark: boolean)
+  {
     this.isDark = isDark;
     localStorage.setItem('isDark', isDark == true ? '1' : '0');
     (<HTMLLinkElement>document.getElementById('theme')).href = isDark ? 'assets/themes/dark.css' : 'assets/themes/white.css';
+  }
+
+  public connect(): void
+  {
+    const url = window.prompt('Bitte Server URL der API eingeben');
+
+    if (url == null)
+    {
+      return;
+    }
+
+    const directory = this.file.dataDirectory;
+    const options: IWriteOptions = { replace: true };
+
+    this.file.writeFile(directory, 'server.json', '{  cfg : ' + url + ' }', options)
+      .then((success) =>
+      {
+        toastr.info('Es wird versucht sich zu verbinden...');
+      }).catch(function (error)
+      {
+        console.error('oops, something went wrong!', error);
+      });
   }
 }
