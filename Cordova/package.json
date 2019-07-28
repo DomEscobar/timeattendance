@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "cordova": "cordova run android --device"
+    "cordova": "cordova run android --device",
+    "ios": "cordova build ios --device"
   },
   "author": "Apache Cordova Team",
   "license": "Apache-2.0",
