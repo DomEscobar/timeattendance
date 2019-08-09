@@ -3,7 +3,10 @@
   <div style="text-align: center">
     <div (click)="addNewTime()"
       class="animate-all {{fillstyle}} circle-button {{isClockIn() ? 'clock-out' : 'clock-in'}}">
-      <p>{{isClockIn() ? 'Ausstempeln' : 'Einstempeln'}}</p>
+      <p>{{isClockIn() ? 'Ausstempeln' : 'Einstempeln'}}
+        <label class="actualtime-panel"
+          *ngIf="isClockIn()">{{actualTime}}</label>
+      </p>
     </div>
 
     <div *ngIf=!isClockIn()>

@@ -7,6 +7,7 @@ import { UserDetail } from '../models/userDetail';
 import { UserDetailRelation } from '../models/userDetailRelation';
 import { BookingTime } from '../models/bookingTime';
 import { BookingKey } from '../models/bookingKey';
+import { BookingLocation } from '../models/bookingLocation';
 /**
  * Service handles all REST http requests
  *  TODO : map correctly into Obeject
@@ -141,7 +142,11 @@ export class ApiService extends BaseService {
     }));
   }
 
-
+  public addBookingLocation(bookingLocation: BookingLocation): Observable<any> {
+    return this.post('bookingTime/addBookingLocation.php', bookingLocation, false).pipe(map((response: any) => {
+      return <any>response;
+    }));
+  }
   /**
    *
    * ---- bookingkey stuff ----

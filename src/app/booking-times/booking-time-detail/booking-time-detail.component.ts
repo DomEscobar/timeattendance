@@ -9,14 +9,16 @@ import moment from 'moment';
   templateUrl: './booking-time-detail.component.html',
   styleUrls: ['./booking-time-detail.component.less']
 })
-export class BookingTimeDetailComponent implements OnInit {
+export class BookingTimeDetailComponent implements OnInit
+{
 
   private _bookingTime: BookingTime;
   public bookingDate: Date;
   public selectedBookingKey: BookingKey;
 
   @Input()
-  set bookingTime(bookingTime: BookingTime) {
+  set bookingTime(bookingTime: BookingTime)
+  {
 
     if (bookingTime == null) return;
 
@@ -25,7 +27,8 @@ export class BookingTimeDetailComponent implements OnInit {
     this._bookingTime = JSON.parse(JSON.stringify(bookingTime));
   }
 
-  get bookingTime(): BookingTime {
+  get bookingTime(): BookingTime
+  {
     return this._bookingTime;
   }
 
@@ -40,23 +43,39 @@ export class BookingTimeDetailComponent implements OnInit {
 
   constructor(public appService: AppService) { }
 
-  ngOnInit() {
+  ngOnInit()
+  {
   }
 
-  public cancel(): void {
+  public cancel(): void
+  {
     this.onCancel.emit(true);
   }
 
-  public save(): void {
+  private markAsEdited(bookingTime: BookingTime): void
+  {
+    bookingTime.isEdited = true;
+  }
+
+  public save(): void
+  {
     this.bookingTime.bookingkeyId = this.selectedBookingKey.bookingKeyId;
+    this.markAsEdited(this.bookingTime);
     this.onSave.emit(this.bookingTime);
   }
 
-  public deleteBtn(): void {
+  public deleteBtn(): void
+  {
     this.onDelete.emit(true);
   }
 
-  public changeDate($event: Date): void {
+  public changeDate($event: Date): void
+  {
     this.bookingTime.date = moment($event).format('DD.MM.YYYY');
+  }
+
+  public showMessage(text: string): void
+  {
+    alert(text);
   }
 }

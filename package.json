@@ -25,6 +25,7 @@
     "@ionic-native/core": "^5.10.0",
     "@ionic-native/file": "^5.10.0",
     "@ionic-native/file-opener": "^5.10.0",
+    "@ionic-native/geolocation": "^5.11.0",
     "@ionic-native/nfc": "^5.10.0",
     "@types/jquery": "^3.3.4",
     "air-datepicker": "^2.2.3",

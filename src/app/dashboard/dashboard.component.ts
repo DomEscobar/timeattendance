@@ -10,60 +10,89 @@ import moment from 'moment';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.less']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit
+{
 
   private dateFormatPipe: DateFormatPipe = new DateFormatPipe();
   public fillstyle = '';
   public bookingKeys: BookingKey[];
+  public actualTime = '00:00:00';
+  public timerActualTime;
 
   constructor(
     public appservice: AppService) { }
 
-  ngOnInit() {
+  ngOnInit()
+  {
     this.bookingKeys = this.appservice.bookingKeys;
+    this.calcActualTime();
   }
 
-  public addNewTime() {
+  private calcActualTime(): void
+  {
+    if (!this.appservice.latestBookingTime)
+    {
+      return;
+    }
 
-    if (this.isClockIn()) {
-      this.fillstyle = 'major-fill  spin';
+    this.timerActualTime = setInterval(() =>
+    {
+      this.actualTime = moment.utc(moment(new Date(), 'HH:mm:ss').diff(moment(this.appservice.latestBookingTime.clockIn, 'HH:mm:ss'))).format("HH:mm:ss");
+    }, 100);
+  }
+
+  public addNewTime()
+  {
+
+    if (this.isClockIn())
+    {
+      this.fillstyle = 'major-fill-red spin';
       const latest = Object.assign({}, this.appservice.latestBookingTime);
       latest.clockOut = this.dateFormatPipe.transform(new Date(), 'HH:mm');
       this.appservice.updateBookingTime(latest);
+      this.calcActualTime();
 
-      setTimeout(() => {
+      setTimeout(() =>
+      {
         this.fillstyle = '';
       }, 500);
       return;
     }
 
-    this.fillstyle = 'major-fill-red spin';
+    clearInterval(this.timerActualTime);
+    this.fillstyle = 'major-fill  spin';
     const bookingTime = new BookingTime();
     bookingTime.bookingkeyId = this.appservice.selectedBookingKey.bookingKeyId;
     bookingTime.clockIn = this.dateFormatPipe.transform(new Date(), 'HH:mm');
     this.appservice.addBookingTime(bookingTime);
 
-    setTimeout(() => {
+    setTimeout(() =>
+    {
       this.fillstyle = '';
 
     }, 500);
   }
 
 
-  public isClockIn(): boolean {
+  public isClockIn(): boolean
+  {
     return this.appservice.latestBookingTime ? this.appservice.latestBookingTime.clockOut == null : false;
   }
 
-  public getDateFormated(): string {
-    if (this.appservice.latestBookingTime == null) {
+  public getDateFormated(): string
+  {
+    if (this.appservice.latestBookingTime == null)
+    {
       return;
     }
 
     return this.appservice.latestBookingTime.date;
   }
 
-  public getBookingTimesOfLatestDate(): BookingTime[] {
-    if (this.appservice.latestBookingTime == null || this.appservice.bookingTimes == null) {
+  public getBookingTimesOfLatestDate(): BookingTime[]
+  {
+    if (this.appservice.latestBookingTime == null || this.appservice.bookingTimes == null)
+    {
       return [];
     }
 
@@ -72,7 +101,8 @@ export class DashboardComponent implements OnInit {
     return this.appservice.bookingTimes.filter(o => moment(o.date, 'DD.MM.YYYY').isSame(latestDate));
   }
 
-  public getLiveActual(): string {
+  public getLiveActual(): string
+  {
     return moment.utc(moment(new Date()).diff(moment(this.appservice.latestBookingTime.clockIn, 'HH:mm'))).format('HH:mm');
   }
 }

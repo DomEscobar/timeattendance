@@ -31,6 +31,9 @@
     "phonegap-nfc": {
       "NFC_USAGE_DESCRIPTION": "Read NFC Tags",
       "PACKAGE_NAME": "io.cordova.hexaccenon"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "io.cordova.hexaccenon"
     }
   },
   "dependent_plugins": {}

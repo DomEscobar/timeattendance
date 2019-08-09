@@ -5,13 +5,15 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Loading } from '../../static/loading/Loading';
 import { Popup } from '../../static/popup/Popup';
-import { AppService } from './app.service';
+import { VariablesService } from './variables.service';
 
 export class BaseService {
     protected http: HttpClient;
+    protected variablesService: VariablesService;
 
     constructor(private injector: Injector) {
         this.http = this.injector.get(HttpClient);
+        this.variablesService = this.injector.get(VariablesService);
     }
 
     /**
@@ -23,7 +25,7 @@ export class BaseService {
         if (isShowLoading) {
             Loading.show();
         }
-        const observer = this.http.get<Response>(AppService.apiUrl + path + '?' + param, {
+        const observer = this.http.get<Response>(this.variablesService.apiUrl + path + '?' + param, {
         }).pipe(
             tap(
                 data => {
@@ -51,7 +53,7 @@ export class BaseService {
         if (isShowLoading) {
             Loading.show();
         }
-        const observer = this.http.post<Response>(AppService.apiUrl + path, creds, {
+        const observer = this.http.post<Response>(this.variablesService.apiUrl + path, creds, {
         }).pipe(
             tap(
                 data => {
@@ -77,7 +79,7 @@ export class BaseService {
    */
     public put(path: string, param: any, creds: any): Observable<Response> {
         Loading.show();
-        const observer = this.http.put<Response>(AppService.apiUrl + path + param, JSON.stringify(creds), {
+        const observer = this.http.put<Response>(this.variablesService.apiUrl + path + param, JSON.stringify(creds), {
         }).pipe(
             tap(
                 data => Popup.success(),
@@ -90,7 +92,7 @@ export class BaseService {
 
     delete(path: string, id: any = ''): Observable<any> {
         Loading.show();
-        const observer = this.http.delete(AppService.apiUrl + path + '?id=' + id, {
+        const observer = this.http.delete(this.variablesService.apiUrl + path + '?id=' + id, {
         }).pipe(
             tap(
                 data => Popup.success(),

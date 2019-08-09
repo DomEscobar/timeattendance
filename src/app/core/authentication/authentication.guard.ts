@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { VariablesService } from '../../services/variables.service';
 import { AppService } from '../../services/app.service';
 
 @Injectable()
@@ -7,17 +8,18 @@ export class AuthenticationGuard implements CanActivate
 {
   constructor(
     private router: Router,
-    private appService: AppService) { }
+    private appService: AppService,
+    private variablesService: VariablesService) { }
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean>
   {
-    this.appService.isApp = window.hasOwnProperty('cordova');
+    this.variablesService.isApp = window.hasOwnProperty('cordova');
 
-    AppService.apiUrl = localStorage.getItem('APIURL');
+    this.variablesService.apiUrl = localStorage.getItem('APIURL');
 
-    if (AppService.apiUrl != null && AppService.apiUrl !== '')
+    if (this.variablesService.apiUrl != null && this.variablesService.apiUrl !== '')
     {
-      this.appService.isOnline = true;
+      this.variablesService.isOnline = true;
       await this.appService.prepareApp();
 
       return this.appService.isAuthenticated();

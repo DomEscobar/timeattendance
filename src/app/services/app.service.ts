@@ -8,8 +8,8 @@ import moment from 'moment';
 declare const toastr: any;
 import { ApiService } from './api.service';
 import { UserDetail } from '../models/userDetail';
-import { File } from '@ionic-native/file/ngx';
-import { resolve } from 'url';
+import { GeolocationService } from './geolocation.service';
+import { VariablesService } from './variables.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,12 +33,10 @@ export class AppService
 
   public userDetails: UserDetail[] = new Array();
 
-  public isApp: boolean;
-  public isOnline: boolean;
-  public static apiUrl: string;
-
   constructor(
+    private variablesService : VariablesService,
     private apiService: ApiService,
+    private geolocationService: GeolocationService,
     private http: HttpClient)
   {
   }
@@ -47,7 +45,7 @@ export class AppService
   {
     this.initUser();
 
-    if (this.isOnline)
+    if (this.variablesService.isOnline)
     {
       this.apiService.getAllBookingKeys().subscribe(async keys =>
       {
@@ -112,7 +110,7 @@ export class AppService
 
     if (userEncrypt == null)
     {
-      if (!this.isOnline)
+      if (!this.variablesService.isOnline)
       {
         this.userSub.next(new User());
       }
@@ -188,6 +186,11 @@ export class AppService
     return date;
   }
 
+  private calculateActualTime(bookingTime: BookingTime): void
+  {
+    bookingTime.actualTime = moment.utc(moment(bookingTime.clockOut, 'HH:mm').diff(moment(bookingTime.clockIn, 'HH:mm'))).format('HH:mm');
+  }
+
   public getNameOfDetail(detailId: number): string
   {
 
@@ -219,9 +222,10 @@ export class AppService
     this.bookingTimes.unshift(bookingTime);
     this.latestBookingTime = bookingTime;
 
-    if (this.isOnline)
+    if (this.variablesService.isOnline)
     {
-      await this.apiService.addBookingTime(bookingTime).toPromise();
+      const bookingId = await this.apiService.addBookingTime(bookingTime).toPromise();
+      this.geolocationService.addBookingLocation(bookingId, true);
     }
 
     this.updateLocaleStoreage();
@@ -238,18 +242,24 @@ export class AppService
 
     if (bookingTime.clockOut != null && bookingTime.clockOut != '')
     {
-      bookingTime.actualTime = moment.utc(moment(bookingTime.clockOut, 'HH:mm').diff(moment(bookingTime.clockIn, 'HH:mm'))).format('HH:mm');
+      this.calculateActualTime(bookingTime);
     }
 
     this.bookingTimes[bkTimeIndex] = bookingTime;
+
     if (updateLatest)
     {
       this.latestBookingTime = bookingTime;
     }
 
-    if (this.isOnline)
+    if (this.variablesService.isOnline)
     {
       await this.apiService.updateBookingTime(bookingTime).toPromise();
+
+      if (updateLatest)
+      {
+        this.geolocationService.addBookingLocation(bookingTime.bookingTimeId, false);
+      }
     }
 
     this.updateLocaleStoreage();
@@ -269,7 +279,7 @@ export class AppService
   public async updateUser(user: User): Promise<void>
   {
 
-    if (this.isOnline)
+    if (this.variablesService.isOnline)
     {
       await this.apiService.updateUser(user).toPromise();
       for (const detail of user.userDetails)

@@ -22,6 +22,11 @@ input {
   background: #f9f9f9 !important;
 }
 
+textarea {
+  border-color: #e5e5e5 !important;
+  background: #f9f9f9 !important;
+}
+
 .preLoader-bg {
   background: white;
 }

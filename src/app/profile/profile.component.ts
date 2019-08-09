@@ -7,6 +7,8 @@ import { ApiService } from '../services/api.service';
 declare const toastr: any;
 import { File, IWriteOptions } from '@ionic-native/file/ngx';
 import { Router } from '@angular/router';
+import { Helper } from 'src/static/Helper';
+import { VariablesService } from '../services/variables.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +25,7 @@ export class ProfileComponent implements OnInit
     private router: Router,
     private ngZone: NgZone,
     private apiService: ApiService,
+    private variablesService: VariablesService,
     public appservice: AppService)
   {
   }
@@ -48,7 +51,7 @@ export class ProfileComponent implements OnInit
     let currUserDetails = this.user.userDetails;
     let userDetails = this.appservice.userDetails;
 
-    if (this.appservice.isOnline)
+    if (this.variablesService.isOnline)
     {
       userDetails = await this.apiService.getAllUserDetails().toPromise();
       if (currUserDetails == null)
@@ -131,8 +134,8 @@ export class ProfileComponent implements OnInit
     if (confirm('Änderungen und Stempelungen gehen dabei verloren, sind Sie sich sicher?'))
     {
       localStorage.setItem('APIURL', url);
-      this.appservice.isOnline = true;
-      AppService.apiUrl = url;
+      this.variablesService.isOnline = true;
+      this.variablesService.apiUrl = url;
       this.appservice.logout();
       this.router.navigate(['login']);
     }

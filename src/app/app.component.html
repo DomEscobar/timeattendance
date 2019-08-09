@@ -5,7 +5,7 @@
     <a [routerLink]="['/profile']">Persönliches</a>
     <a [routerLink]="['/bookingTimes']" routerLinkActive="router-link-active">Stempelungen</a>
 
-    <div *ngIf="appService.isOnline" class="" style="float: right;color: rgba(255, 0, 0, 0.37);;" (click)="signOut()">
+    <div *ngIf="appService.isOnline" class="" style="float: right;color: rgba(255, 0, 0, 0.6);" (click)="signOut()">
         <i-feather name="log-out"></i-feather>
         <span style="margin-left: 15px;" class="hide-mobile">Abmelden</span>
     </div>

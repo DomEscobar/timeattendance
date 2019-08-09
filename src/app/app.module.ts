@@ -16,7 +16,7 @@ import { TimeInputComponent } from './components/time-input/time-input.component
 import 'moment/locale/de';
 import { SavePanelComponent } from './components/save-panel/save-panel.component';
 import { FeatherModule } from 'angular-feather';
-import { Hexagon, Moon, Sun, Trash, LogOut, Download, CloudOff, Cloud } from 'angular-feather/icons';
+import { Hexagon, Moon, Sun, Trash, LogOut, Download, CloudOff, Cloud, MessageSquare, AlertOctagon } from 'angular-feather/icons';
 import { LoadingComponent } from '../static/loading/loading.component';
 import { LoginComponent } from './login/login.component';
 import { CoreModule } from './core/core.module';
@@ -24,10 +24,12 @@ import { NFC, Ndef } from '@ionic-native/nfc/ngx';
 import { LoadingPanelComponent } from './components/loading-panel/loading-panel.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ExportAsModule } from 'ngx-export-as';
-import { File, IWriteOptions } from '@ionic-native/file/ngx';
+import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
 import { PdfViewComponent } from './components/pdf-view/pdf-view.component';
 import { FileExportService } from './services/file-export.service';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { VariablesService } from './services/variables.service';
 
 const icons = {
   Hexagon,
@@ -37,7 +39,9 @@ const icons = {
   LogOut,
   Download,
   CloudOff,
-  Cloud
+  Cloud,
+  MessageSquare,
+  AlertOctagon
 };
 
 @NgModule({
@@ -67,7 +71,7 @@ const icons = {
     FormsModule,
     FeatherModule.pick(icons)
   ],
-  providers: [FileExportService, NFC, Ndef, File, FileOpener, { provide: LocationStrategy, useClass: HashLocationStrategy }],
+  providers: [VariablesService, Geolocation, FileExportService, NFC, Ndef, File, FileOpener, { provide: LocationStrategy, useClass: HashLocationStrategy }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

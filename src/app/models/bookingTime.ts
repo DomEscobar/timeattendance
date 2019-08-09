@@ -9,6 +9,8 @@ export class BookingTime {
         public bookingkeyId?: number,
         public actualTime?: string,
         public userid?: number,
+        public isEdited?: boolean,
+        public comment?: string,
     ) {
         if (this.bookingTimeId == null) {
             this.bookingTimeId = this.createGuid();

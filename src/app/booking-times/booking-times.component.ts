@@ -2,7 +2,6 @@ import { Component, AfterViewInit, ViewChild } from '@angular/core';
 import { AppService } from '../services/app.service';
 import moment from 'moment';
 import { BookingTime } from '../models/bookingTime';
-import { ExportAsService, ExportAsConfig } from 'ngx-export-as';
 import { PdfViewComponent } from '../components/pdf-view/pdf-view.component';
 import { FileExportService } from '../services/file-export.service';
 declare const $: any;
@@ -12,7 +11,8 @@ declare const $: any;
   templateUrl: './booking-times.component.html',
   styleUrls: ['./booking-times.component.less']
 })
-export class BookingTimesComponent implements AfterViewInit {
+export class BookingTimesComponent implements AfterViewInit
+{
 
   public from: Date;
   public to: Date;
@@ -28,8 +28,10 @@ export class BookingTimesComponent implements AfterViewInit {
     public fileExportService: FileExportService,
     public appService: AppService) { }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
+  ngAfterViewInit()
+  {
+    setTimeout(() =>
+    {
       this.from = moment(new Date()).startOf('month').toDate();
       this.to = moment(new Date()).endOf('month').toDate();
       this.bookingTimes = JSON.parse(JSON.stringify(this.appService.bookingTimes));
@@ -37,28 +39,37 @@ export class BookingTimesComponent implements AfterViewInit {
     }, 400);
   }
 
-  public addBooking(): void {
+  public addBooking(): void
+  {
     const bookingTime = new BookingTime();
     bookingTime.date = moment(this.from).format('DD.MM.YYYY');
+
+    if (moment(new Date()).isBetween(moment(this.from), moment(this.to)))
+    {
+      bookingTime.date = moment(new Date()).format('DD.MM.YYYY');
+    }
 
     this.appService.addBookingTime(bookingTime);
     this.load();
   }
 
-  public load(): void {
+  public load(): void
+  {
 
     this.bookingTimes = [];
     let from = JSON.parse(JSON.stringify(this.from));
     let to = JSON.parse(JSON.stringify(this.to));
 
-    this.appService.bookingTimes.forEach(o => {
+    this.appService.bookingTimes.forEach(o =>
+    {
 
       const oDate = moment(o.date, 'DD.MM.YYYY');
       from = moment(moment(from).format('DD.MM.YYYY'), 'DD.MM.YYYY');
       to = moment(moment(to).format('DD.MM.YYYY'), 'DD.MM.YYYY');
 
       // tslint:disable-next-line: max-line-length
-      if (from <= oDate && oDate <= to) {
+      if (from <= oDate && oDate <= to)
+      {
         this.bookingTimes.push(o);
       }
 
@@ -67,12 +78,14 @@ export class BookingTimesComponent implements AfterViewInit {
     this.calcActualtime();
   }
 
-  public export() {
+  public export()
+  {
     this.setData();
     this.isOnPdfView = true;
   }
 
-  private setData(): void {
+  private setData(): void
+  {
     const from = moment(this.from).format('DD.MM.YYYY');
     const to = moment(this.to).format('DD.MM.YYYY');
     const user = this.appService.getUser();
@@ -80,26 +93,29 @@ export class BookingTimesComponent implements AfterViewInit {
     this.fileExportService.setData(user, from, to, this.bookingTimes, this.calcActualtime);
   }
 
-  public updateBookingTime(bookingTime: BookingTime) {
-
+  public updateBookingTime(bookingTime: BookingTime)
+  {
     this.appService.updateBookingTime(bookingTime, false);
     this.selectedBooking = null;
     this.load();
   }
 
-  public deleteBookingTime(bookingTime: BookingTime): void {
-
+  public deleteBookingTime(bookingTime: BookingTime): void
+  {
     this.appService.deleteBookingTime(bookingTime);
     this.selectedBooking = null;
     this.load();
   }
 
-  private calcActualtime() {
+  private calcActualtime()
+  {
     let hours = 0;
     let minutes = 0;
-    this.bookingTimes.forEach(element => {
+    this.bookingTimes.forEach(element =>
+    {
 
-      if (element.actualTime == null) {
+      if (element.actualTime == null)
+      {
         return;
       }
       const sp = element.actualTime.split(':');
