@@ -1,11 +1,11 @@
 <div class="container-fluid" style="max-width: 400px; text-align: center;margin-top:7%;">
 
   <div style="text-align: center">
-    <div (click)="addNewTime()"
+    <div (click)="addNewTime($event)"
       class="animate-all {{fillstyle}} circle-button {{isClockIn() ? 'clock-out' : 'clock-in'}}">
       <p>{{isClockIn() ? 'Ausstempeln' : 'Einstempeln'}}
         <label class="actualtime-panel"
-          *ngIf="isClockIn()">{{actualTime}}</label>
+          *ngIf="isClockIn()&&actualTime">{{actualTime}}</label>
       </p>
     </div>
 

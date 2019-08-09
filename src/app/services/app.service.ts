@@ -220,14 +220,14 @@ export class AppService
   public async addBookingTime(bookingTime: BookingTime): Promise<void>
   {
     this.bookingTimes.unshift(bookingTime);
-    this.latestBookingTime = bookingTime;
-
+    
     if (this.variablesService.isOnline)
     {
-      const bookingId = await this.apiService.addBookingTime(bookingTime).toPromise();
-      this.geolocationService.addBookingLocation(bookingId, true);
+      bookingTime.bookingTimeId = await this.apiService.addBookingTime(bookingTime).toPromise();
+      this.geolocationService.addBookingLocation(bookingTime.bookingTimeId, true);
     }
-
+    
+    this.latestBookingTime = bookingTime;
     this.updateLocaleStoreage();
   }
 

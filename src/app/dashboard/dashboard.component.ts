@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit
   private dateFormatPipe: DateFormatPipe = new DateFormatPipe();
   public fillstyle = '';
   public bookingKeys: BookingKey[];
-  public actualTime = '00:00:00';
+  public actualTime;
   public timerActualTime;
 
   constructor(
@@ -41,36 +41,42 @@ export class DashboardComponent implements OnInit
     }, 100);
   }
 
-  public addNewTime()
+  public async addNewTime(event: Event)
   {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (this.fillstyle != '')
+    {
+      return;
+    }
 
     if (this.isClockIn())
     {
-      this.fillstyle = 'major-fill-red spin';
+      this.fillstyle = 'major-fill';
       const latest = Object.assign({}, this.appservice.latestBookingTime);
       latest.clockOut = this.dateFormatPipe.transform(new Date(), 'HH:mm');
-      this.appservice.updateBookingTime(latest);
-      this.calcActualTime();
+      await this.appservice.updateBookingTime(latest);
 
       setTimeout(() =>
       {
         this.fillstyle = '';
       }, 500);
+      clearInterval(this.timerActualTime);
       return;
     }
 
-    clearInterval(this.timerActualTime);
-    this.fillstyle = 'major-fill  spin';
+    this.fillstyle = 'major-fill';
     const bookingTime = new BookingTime();
     bookingTime.bookingkeyId = this.appservice.selectedBookingKey.bookingKeyId;
     bookingTime.clockIn = this.dateFormatPipe.transform(new Date(), 'HH:mm');
-    this.appservice.addBookingTime(bookingTime);
+    await this.appservice.addBookingTime(bookingTime);
 
     setTimeout(() =>
     {
       this.fillstyle = '';
-
     }, 500);
+    this.calcActualTime();
   }
 
 
