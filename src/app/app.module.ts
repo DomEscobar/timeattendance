@@ -16,7 +16,7 @@ import { TimeInputComponent } from './components/time-input/time-input.component
 import 'moment/locale/de';
 import { SavePanelComponent } from './components/save-panel/save-panel.component';
 import { FeatherModule } from 'angular-feather';
-import { Hexagon, Moon, Sun, Trash, LogOut, Download, CloudOff, Cloud, MessageSquare, AlertOctagon } from 'angular-feather/icons';
+import { Hexagon, Moon, Sun, Trash, LogOut, Download, CloudOff, Cloud, MapPin, MessageSquare, AlertOctagon } from 'angular-feather/icons';
 import { LoadingComponent } from '../static/loading/loading.component';
 import { LoginComponent } from './login/login.component';
 import { CoreModule } from './core/core.module';
@@ -30,6 +30,10 @@ import { PdfViewComponent } from './components/pdf-view/pdf-view.component';
 import { FileExportService } from './services/file-export.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { VariablesService } from './services/variables.service';
+import { GeolocationComponent } from './booking-times/geolocation/geolocation.component';
+import { AgmCoreModule } from '@agm/core';
+import { ToNumberPipe } from './booking-times/geolocation/to-number.pipe';
+import { ToBooleanPipe } from './booking-times/geolocation/to-boolean.pipe';
 
 const icons = {
   Hexagon,
@@ -41,7 +45,8 @@ const icons = {
   CloudOff,
   Cloud,
   MessageSquare,
-  AlertOctagon
+  AlertOctagon,
+  MapPin
 };
 
 @NgModule({
@@ -59,9 +64,15 @@ const icons = {
     SavePanelComponent,
     LoginComponent,
     LoadingPanelComponent,
-    PdfViewComponent
+    PdfViewComponent,
+    GeolocationComponent,
+    ToNumberPipe,
+    ToBooleanPipe
   ],
   imports: [
+    AgmCoreModule.forRoot({
+      apiKey: 'REMOVED_LEGACY_GOOGLE_MAPS_KEY'
+    }),
     ExportAsModule,
     CoreModule,
     BrowserModule,

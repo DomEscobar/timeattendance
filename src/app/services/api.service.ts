@@ -147,6 +147,14 @@ export class ApiService extends BaseService {
       return <any>response;
     }));
   }
+
+  public getBookingLocation(bookingTimeId: number): Observable<BookingLocation[]> {
+    return this.get('bookingTime/getBookingLocation.php', `id=${bookingTimeId}`, false).pipe(map((response: any) => {
+      return <BookingLocation[]>response;
+    }));
+  }
+  
+
   /**
    *
    * ---- bookingkey stuff ----

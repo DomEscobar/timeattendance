@@ -3,6 +3,9 @@ import { BookingTime } from '../../models/bookingTime';
 import { AppService } from '../../services/app.service';
 import { BookingKey } from '../../models/bookingKey';
 import moment from 'moment';
+import { BookingLocation } from '../../models/bookingLocation';
+import { ApiService } from '../../services/api.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-booking-time-detail',
@@ -11,10 +14,12 @@ import moment from 'moment';
 })
 export class BookingTimeDetailComponent implements OnInit
 {
-
   private _bookingTime: BookingTime;
   public bookingDate: Date;
   public selectedBookingKey: BookingKey;
+
+  public isMapsVisible:boolean;
+  public bookingLocations: BookingLocation[] = new Array();
 
   @Input()
   set bookingTime(bookingTime: BookingTime)
@@ -25,6 +30,8 @@ export class BookingTimeDetailComponent implements OnInit
     this.bookingDate = moment(bookingTime.date, 'DD.MM.YYYY').toDate();
     this.selectedBookingKey = this.appService.bookingKeys.find(o => o.bookingKeyId == bookingTime.bookingkeyId);
     this._bookingTime = JSON.parse(JSON.stringify(bookingTime));
+
+    this.fetchBookingLocation();
   }
 
   get bookingTime(): BookingTime
@@ -41,7 +48,9 @@ export class BookingTimeDetailComponent implements OnInit
   @Output()
   onCancel: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(public appService: AppService) { }
+  constructor(
+    private apiService: ApiService,
+    public appService: AppService) { }
 
   ngOnInit()
   {
@@ -50,6 +59,14 @@ export class BookingTimeDetailComponent implements OnInit
   public cancel(): void
   {
     this.onCancel.emit(true);
+  }
+
+  private fetchBookingLocation(): void
+  {
+    this.apiService.getBookingLocation(this.bookingTime.bookingTimeId).subscribe(data =>
+    {
+      this.bookingLocations = data;
+    });
   }
 
   private markAsEdited(bookingTime: BookingTime): void

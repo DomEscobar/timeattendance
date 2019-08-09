@@ -1,0 +1,21 @@
+<div>
+  <div style="text-align:right;">
+    <img *ngFor="let bookingLocation of bookingLocations"
+      [src]="(bookingLocation.isClockIn | toBoolean) ? 'assets/clockIn.png' : 'assets/clockOut.png'"
+      (markerClick)="select(bookingLocation)" />
+  </div>
+
+  <ng-container *ngIf="bookingLocations&&selected">
+    <agm-map style="height: 300px" [zoom]="13" [latitude]="selected.latitude | toNumber"
+      [longitude]="selected.longitude | toNumber">
+
+      <agm-marker *ngFor="let bookingLocation of bookingLocations"
+        [iconUrl]="(bookingLocation.isClockIn | toBoolean) ? 'assets/clockIn.png' :'assets/clockOut.png'  "
+        [latitude]="bookingLocation.latitude | toNumber" [longitude]="bookingLocation.longitude | toNumber"
+        (markerClick)="select(bookingLocation)">
+      </agm-marker>
+
+    </agm-map>
+  </ng-container>
+
+</div>

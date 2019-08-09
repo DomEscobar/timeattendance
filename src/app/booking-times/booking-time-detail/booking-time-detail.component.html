@@ -38,8 +38,16 @@
       </i-feather>
       <i-feather class="btn-primary" *ngIf="!bookingTime.comment" name="message-square"
         (click)="bookingTime.comment = ' '"></i-feather>
+
+      <i-feather *ngIf="bookingLocations.length != 0" name="map-pin" (click)="isMapsVisible=!isMapsVisible"></i-feather>
     </div>
 
+    <!--Geolocation-->
+    <ng-container *ngIf="isMapsVisible">
+      <app-geolocation [bookingLocations]="bookingLocations">
+
+      </app-geolocation>
+    </ng-container>
 
     <label class="right delete-btn" (click)="deleteBtn()">Löschen</label>
     <hr>
