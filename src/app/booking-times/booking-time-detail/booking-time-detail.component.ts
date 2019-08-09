@@ -69,15 +69,14 @@ export class BookingTimeDetailComponent implements OnInit
     });
   }
 
-  private markAsEdited(bookingTime: BookingTime): void
+  public markAsEdited(): void
   {
-    bookingTime.isEdited = true;
+    this.bookingTime.isEdited = true;
   }
 
   public save(): void
   {
     this.bookingTime.bookingkeyId = this.selectedBookingKey.bookingKeyId;
-    this.markAsEdited(this.bookingTime);
     this.onSave.emit(this.bookingTime);
   }
 

@@ -37,6 +37,7 @@ export class GeolocationComponent implements OnInit
 
   select(bookingLocation: BookingLocation): void
   {
+    debugger;
     this.selected = bookingLocation;
   }
 }
