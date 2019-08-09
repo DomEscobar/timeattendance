@@ -57,10 +57,10 @@
 </div>
 
 <div class="connection-panel">
-  <div *ngIf="!appservice.isOnline" (click)="connect()">
+  <div *ngIf="!variablesService.isOnline" (click)="connect()">
     <i-feather name="cloud-off"></i-feather> <span style="font-size: 11px;margin-left: 10px;">Nicht verbunden</span>
   </div>
-  <div *ngIf="appservice.isOnline">
+  <div *ngIf="variablesService.isOnline">
     <i-feather name="cloud"></i-feather> <span style="font-size: 11px; margin-left: 10px;">Verbunden </span>
   </div>
 </div>

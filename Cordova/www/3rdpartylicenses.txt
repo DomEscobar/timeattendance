@@ -678,6 +678,9 @@ THE SOFTWARE.
 @angular/common
 MIT
 
+@ionic-native/geolocation
+MIT
+
 @angular/platform-browser
 MIT
 

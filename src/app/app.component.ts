@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AppService } from './services/app.service';
 import { Router } from '@angular/router';
+import { VariablesService } from './services/variables.service';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ export class AppComponent {
   public isPreloading: boolean = true;
 
   constructor(
+    public variablesService: VariablesService,
     private router: Router,
     public appService: AppService) {
     const darkTheme = localStorage.getItem('isDark');

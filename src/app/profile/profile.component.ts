@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit
     private router: Router,
     private ngZone: NgZone,
     private apiService: ApiService,
-    private variablesService: VariablesService,
+    public variablesService: VariablesService,
     public appservice: AppService)
   {
   }
