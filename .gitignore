@@ -7,6 +7,13 @@
 
 # dependencies
 /node_modules
+node_modules/
+
+# Modern app verification artifacts
+/.playwright-cli/
+/playwright-report/
+/test-results/
+/.pages-publish-*/
 
 # profiling files
 chrome-profiler-events.json
