@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { cpSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -23,7 +23,7 @@ function run(command, args, options = {}) {
   return result.stdout;
 }
 
-// Only the production output enters the public repository.
+// Publish the production output and an explicit allowlist of presentation assets.
 run(process.execPath, [npmCli, "run", "build"], {
   env: { ...process.env, VITE_BASE_PATH: "/timeattendance-pages/" },
 });
@@ -43,10 +43,16 @@ for (const file of files.split("\0").filter(Boolean)) {
 }
 cpSync(join(root, "dist"), checkout, { recursive: true });
 writeFileSync(join(checkout, ".nojekyll"), "");
-writeFileSync(
-  join(checkout, "README.md"),
-  `# simplezeit\n\nPublic website build: ${website}\n\nThis repository contains only the compiled application. Time entries and profiles stay in each visitor's browser.\n`,
-);
+cpSync(join(root, "docs", "PUBLIC_README.md"), join(checkout, "README.md"));
+const media = join(checkout, "media");
+mkdirSync(media, { recursive: true });
+for (const [source, name] of [
+  ["docs/readme/cover.svg", "cover.svg"],
+  ["docs/evidence/desktop-dashboard.png", "dashboard.png"],
+  ["docs/evidence/mobile-viewport.png", "mobile.png"],
+]) {
+  cpSync(join(root, source), join(media, name));
+}
 run("git", ["add", "--all"], { cwd: checkout });
 const changed = run("git", ["diff", "--cached", "--name-only"], {
   cwd: checkout,

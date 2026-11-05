@@ -73,8 +73,9 @@ Screenshots and report:
 
 - Source repository: private `DomEscobar/timeattendance`, branch `master`.
 - GitHub rejected Pages activation on the private repository with HTTP 422: current plan does not support Pages for this repository.
-- Public deployment repository: `DomEscobar/timeattendance-pages`, contains only production assets, `.nojekyll`, and a website README; source visibility is unchanged.
+- Public deployment repository: `DomEscobar/timeattendance-pages`, contains production assets, `.nojekyll`, a styled website README, a vector cover, and two explicitly selected app screenshots; source visibility is unchanged.
 - Website: https://domescobar.github.io/timeattendance-pages/
 - Vite base is configurable through `VITE_BASE_PATH`; the Pages build uses `/timeattendance-pages/`.
 - `.github/workflows/ci.yml` verifies tests/build and uploads a build artifact. `npm run publish:pages` performs subsequent deployments without storing tokens or configuring cross-repository CI credentials.
 - Browser data remains local to each visitor; existing localhost records require backup/import to transfer to the hosted origin.
+- The user explicitly approved creating the public deployment repository and requested an aesthetic README. Publication assets are allowlisted in `scripts/publish-pages.mjs`.
