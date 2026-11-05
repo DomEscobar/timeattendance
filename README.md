@@ -1,6 +1,6 @@
 # simplezeit
 
-<div align="center"><img src="docs/readme/cover.svg" alt="simplezeit – Deine Zeit. Im Überblick." width="1280"><p><strong>Lokale Zeiterfassung, die ruhig bleibt.</strong><br>Arbeitstage, Pausen und Berichte – direkt im Browser.</p><p><a href="https://domescobar.github.io/timeattendance-pages/"><strong>↗ simplezeit live öffnen</strong></a></p></div>
+<div align="center"><img src="docs/readme/cover.svg" alt="simplezeit – Deine Zeit. Im Überblick." width="1280"><p><strong>Lokale Zeiterfassung, die ruhig bleibt.</strong><br>Arbeitstage, Pausen und Berichte – direkt im Browser.</p><p><a href="https://domescobar.github.io/timeattendance/"><strong>↗ simplezeit live öffnen</strong></a></p></div>
 
 ## Was simplezeit kann
 
@@ -37,12 +37,12 @@ npm run preview        # Produktionsbuild lokal ansehen
 npm test               # Zeitlogik und Speicherung prüfen
 npm run test:e2e       # Desktop und Mobil testen (Chrome erforderlich)
 npm run format         # Quellcode formatieren
-npm run publish:pages  # Website mit README und Medien veröffentlichen
+npm run publish:pages  # Pages-Deployment per CI auslösen
 ```
 
-Das Quellcode-Repository bleibt privat. `npm run publish:pages` baut mit dem passenden Unterpfad und kopiert den fertigen Build, die öffentliche README, das Titelmotiv und zwei ausgewählte Screenshots nach `DomEscobar/timeattendance-pages`. Git-Schreibzugriff auf dieses Repository ist erforderlich. Die veröffentlichte Website liegt unter [domescobar.github.io/timeattendance-pages](https://domescobar.github.io/timeattendance-pages/).
+Dieses Repository ist öffentlich. Nach jedem Push auf `master` baut und veröffentlicht die GitHub-Actions-Workflow den Pages-Build automatisch. `npm run publish:pages` stößt denselben CI-Workflow manuell an. Die veröffentlichte Website liegt unter [domescobar.github.io/timeattendance](https://domescobar.github.io/timeattendance/); Vite verwendet dafür den Unterpfad `/timeattendance/`.
 
-Die CI prüft jeden Push und Pull Request und stellt den Build als Artefakt bereit. Die Veröffentlichung erfolgt mit dem Befehl oben. Deployment-Kopien bleiben unter `.pages-publish-*` liegen und werden von Git ignoriert; Zugangstokens werden nicht in Dateien geschrieben.
+Die CI prüft Pushes und Pull Requests mit Build, Fachtests und Browser-Szenarien und veröffentlicht nach erfolgreichem Push auf `master`. Es gibt keine separate Deployment-Kopie und keine Zugangstokens in Dateien.
 
 Historische Angular-/Cordova-Quellen bleiben als Referenz erhalten; die neue Anwendung liegt in `modern/`. [Umfang und Prüfnachweise](docs/REBUILD.md) dokumentieren auch die Migrationsgrenzen. Der Nachweis vom 05.11.2026 umfasst **17 Fachtests und 18 Browser-Szenarien**.
 

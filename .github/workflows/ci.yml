@@ -1,4 +1,4 @@
-name: Build and test
+name: Build, test and deploy Pages
 
 on:
   push:
@@ -11,6 +11,10 @@ on:
 
 permissions:
   contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -34,10 +38,25 @@ jobs:
       - name: Build application
         run: npm run build
         env:
-          VITE_BASE_PATH: /timeattendance-pages/
+          VITE_BASE_PATH: /timeattendance/
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v7
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5
         with:
-          name: github-pages-build
           path: dist/
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/master'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
