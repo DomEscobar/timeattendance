@@ -71,11 +71,11 @@ Screenshots and report:
 
 ## GitHub publication
 
-Visibility is currently blocked by automatic approval review because the historical repository contained an embedded Google Maps browser API key. The key has been removed from the current legacy files. A full local history scrub and recovery bundle are being prepared; replacing remote history requires separate user approval. The configuration below is the requested publication target.
+Visibility is currently blocked by automatic approval review because the historical repository contained an embedded Google Maps browser API key. The key has been removed from the current legacy files. A verified local recovery bundle and sanitized history have been prepared; the scrub found no credential-pattern matches and preserved the current application tree. Replacing remote history still requires separate user approval. The configuration below is the requested publication target.
 
-- The original repository `DomEscobar/timeattendance` is public; `master` is the deployment branch.
-- Website: https://domescobar.github.io/timeattendance/
+- The original repository `DomEscobar/timeattendance` is currently private (`has_pages=false`); publication is pending. `master` is the configured deployment branch once the repository is public.
+- Planned website: https://domescobar.github.io/timeattendance/ (not deployed yet).
 - Vite base is configurable through `VITE_BASE_PATH`; the Pages build uses `/timeattendance/`.
-- `.github/workflows/ci.yml` runs build, unit/storage tests and browser scenarios. A successful push to `master` deploys Pages automatically.
-- `npm run publish:pages` dispatches the same deployment workflow for a manual publish.
-- There is no separate deployment repository or copied source tree. Browser data remains local to each visitor; existing localhost records require backup/import to transfer to the hosted origin.
+- `.github/workflows/ci.yml` runs build and unit/storage tests. Its Pages deploy job runs only for non-PR pushes to `master` when the repository is public; browser scenarios were verified separately in local runs.
+- `npm run publish:pages` dispatches the same configured deployment workflow for a manual publish; it does not make the private original publicly available.
+- Deployment is configured solely in this original repository. Browser data remains local to each visitor; existing localhost records require backup/import to transfer to the hosted origin.

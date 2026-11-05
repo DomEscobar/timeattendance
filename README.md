@@ -1,6 +1,6 @@
 # simplezeit
 
-<div align="center"><img src="docs/readme/cover.svg" alt="simplezeit – Deine Zeit. Im Überblick." width="1280"><p><strong>Lokale Zeiterfassung, die ruhig bleibt.</strong><br>Arbeitstage, Pausen und Berichte – direkt im Browser.</p><p><a href="https://domescobar.github.io/timeattendance/"><strong>↗ simplezeit live öffnen</strong></a></p></div>
+<div align="center"><img src="docs/readme/cover.svg" alt="simplezeit – Deine Zeit. Im Überblick." width="1280"><p><strong>Lokale Zeiterfassung, die ruhig bleibt.</strong><br>Arbeitstage, Pausen und Berichte – direkt im Browser.</p><p><strong>↗ Veröffentlichung geplant</strong></p></div>
 
 ## Was simplezeit kann
 
@@ -40,9 +40,9 @@ npm run format         # Quellcode formatieren
 npm run publish:pages  # Pages-Deployment per CI auslösen
 ```
 
-Dieses Repository ist öffentlich. Nach jedem Push auf `master` baut und veröffentlicht die GitHub-Actions-Workflow den Pages-Build automatisch. `npm run publish:pages` stößt denselben CI-Workflow manuell an. Die veröffentlichte Website liegt unter [domescobar.github.io/timeattendance](https://domescobar.github.io/timeattendance/); Vite verwendet dafür den Unterpfad `/timeattendance/`.
+Die Veröffentlichung des ursprünglichen Repositories ist noch ausstehend: `DomEscobar/timeattendance` ist derzeit privat, und [domescobar.github.io/timeattendance](https://domescobar.github.io/timeattendance/) ist noch nicht bereitgestellt. Das geplante Ziel verwendet den Unterpfad `/timeattendance/`. `npm run publish:pages` stößt den vorgesehenen CI-Workflow manuell an, sobald die Veröffentlichungsvoraussetzungen erfüllt sind.
 
-Die CI prüft Pushes und Pull Requests mit Build, Fachtests und Browser-Szenarien und veröffentlicht nach erfolgreichem Push auf `master`. Es gibt keine separate Deployment-Kopie und keine Zugangstokens in Dateien.
+Die CI prüft Pushes und Pull Requests mit Build und Fachtests. Die Pages-Bereitstellung ist im Workflow für ein öffentliches Original-Repository auf `master` vorgesehen; aktuell ist diese Voraussetzung noch nicht erfüllt. Browser-Szenarien wurden lokal separat verifiziert. Die Veröffentlichung ist ausschließlich aus diesem Repository vorgesehen.
 
 Historische Angular-/Cordova-Quellen bleiben als Referenz erhalten; die neue Anwendung liegt in `modern/`. [Umfang und Prüfnachweise](docs/REBUILD.md) dokumentieren auch die Migrationsgrenzen. Der Nachweis vom 05.11.2026 umfasst **17 Fachtests und 18 Browser-Szenarien**.
 
