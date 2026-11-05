@@ -71,6 +71,8 @@ Screenshots and report:
 
 ## GitHub publication
 
+Visibility is currently blocked by automatic approval review because the historical repository contained an embedded Google Maps browser API key. The key has been removed from the current legacy files. A full local history scrub and recovery bundle are being prepared; replacing remote history requires separate user approval. The configuration below is the requested publication target.
+
 - The original repository `DomEscobar/timeattendance` is public; `master` is the deployment branch.
 - Website: https://domescobar.github.io/timeattendance/
 - Vite base is configurable through `VITE_BASE_PATH`; the Pages build uses `/timeattendance/`.
